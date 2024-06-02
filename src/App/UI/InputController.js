@@ -38,6 +38,10 @@ export default class InputController {
       console.log("DownD");
       playerMovements.setState({right: true})
     break;
+    case "Space":
+      console.log("Jump");
+      playerMovements.setState({jump: true})
+    break;
     }}
     this.keyPressed[event.code] = true
 
@@ -66,6 +70,10 @@ export default class InputController {
     case "ArrowRight":
       console.log("UpD");
       playerMovements.setState({right: false})
+    break;
+    case "Space":
+    console.log("Jump");
+    playerMovements.setState({jump: false})
     break;
     }
     this.keyPressed[event.code] = false
