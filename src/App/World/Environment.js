@@ -10,8 +10,8 @@ export default class Environment {
 
     this.loadEnvironment();
     this.addGround();
-    // this.addWalls();
-    // this.addStairs();
+    this.addWalls();
+    this.addStairs();
     this.addMeshes();
   }
 
@@ -28,7 +28,7 @@ export default class Environment {
   addGround() {
     const groundGeometry = new THREE.BoxGeometry(100, 1, 100);
     const groundMaterial = new THREE.MeshStandardMaterial({
-      color: "turquoise",
+      color: "white",
     });
     this.groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
     this.scene.add(this.groundMesh);
@@ -37,7 +37,7 @@ export default class Environment {
 
   addWalls() {
     const wallMaterial = new THREE.MeshStandardMaterial({
-      color: "lightgreen",
+      color: "green",
     });
 
     const wallGeometry = new THREE.BoxGeometry(100, 10, 1);
@@ -65,7 +65,7 @@ export default class Environment {
 
   addStairs() {
     const stairMaterial = new THREE.MeshStandardMaterial({
-      color: "orange",
+      color: "grey",
     });
 
     const stairGeometry = new THREE.BoxGeometry(10, 1, 100);
@@ -89,7 +89,7 @@ export default class Environment {
   addMeshes() {
     const geometry = new THREE.SphereGeometry(1, 32, 32);
     const material = new THREE.MeshStandardMaterial({
-      color: "blue",
+      color: "white",
     });
 
     for (let i = 0; i < 100; i++) {

@@ -20,41 +20,64 @@ export default class Character {
 
     instantiateCharacter() {
         const geometry = new THREE.BoxGeometry(2,2,2);
-        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        const material = new THREE.MeshStandardMaterial({ color: "rebeccapurple" });
         this.character = new THREE.Mesh(geometry, material);
         this.character.position.set(0, 2.5, 0);
         this.scene.add(this.character);
-        this.character.rigidBody= this.physics.add(this.character,'dynamic','cuboid');
-        console.log(this.character.rigidBody);
+        this.rigidBodyType =
+      this.physics.rapier.RigidBodyDesc.kinematicPositionBased();
+    this.rigidBody = this.physics.world.createRigidBody(this.rigidBodyType);
+
+    // create a collider
+    this.colliderType = this.physics.rapier.ColliderDesc.cuboid(1, 1, 1);
+    this.collider = this.physics.world.createCollider(
+      this.colliderType,
+      this.rigidBody
+    );
+
+    // set rigid body position to character position
+    const worldPosition = this.character.getWorldPosition(new THREE.Vector3());
+    const worldRotation = this.character.getWorldQuaternion(
+      new THREE.Quaternion()
+    );
+    this.rigidBody.setTranslation(worldPosition);
+    this.rigidBody.setRotation(worldRotation);
+
+    // Create Character Controller
+    this.characterController= this.physics.world.createCharacterController(0.1)
+
     }
 
-    loop() {
+    loop(deltaTime) {
+        const movement = new THREE.Vector3()
         if (this.forward) {
-            // this.character.position.z +=-1
-            this.character.rigidBody.applyImpulse({
-                x:0,y:0,z:-3
-            },true)
+            movement.z -= 1
         }
         if (this.backward) {
-            // this.character.position.z +=1
-            this.character.rigidBody.applyImpulse({
-                x:0,y:0,z:3
-            },true)
+            movement.z = 1
         }
         if (this.left) {
-            // this.character.position.x +=-1
-            this.character.rigidBody.applyImpulse({
-                x:-3,y:0,z:0
-            },true)
+            movement.x -= 1
         }
         if (this.right) {
-            // this.character.position.x +=1
-            this.character.rigidBody.applyImpulse({
-                x:3,y:0,z:0
-            },true)
+            movement.x = 1
         }
+
+        movement.normalize().multiplyScalar(deltaTime *25)
+        movement.y = -1
+        
+        this.characterController.computeColliderMovement(this.collider, movement)
+        this.characterController.computedMovement()
+        
+        const newPosition = new THREE.Vector3()
+        .copy(this.rigidBody.translation())
+        .add(this.characterController.computedMovement())
+        
+
+
+        this.rigidBody.setNextKinematicTranslation(newPosition)
+
+        this.character.position.copy(this.rigidBody.translation())
     }
-
-
         
 }

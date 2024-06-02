@@ -47,7 +47,7 @@ export default class Physics {
       break;
 
       case 'kinematic':
-      rigidBodyType = this.rapier.RigidBodyDesc.kinematicVelocityBased();
+      rigidBodyType = this.rapier.RigidBodyDesc.kinematicPositionBased();
       break;
     }
 
