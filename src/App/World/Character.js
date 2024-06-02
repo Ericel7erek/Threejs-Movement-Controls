@@ -54,42 +54,58 @@ export default class Character {
 
     }
 
-    loop(deltaTime) {
-        const movement = new THREE.Vector3()
-        if (this.forward) {
-            movement.z -= 1
-        }
-        if (this.backward) {
-            movement.z = 1
-        }
-        if (this.left) {
-            movement.x -= 1
-        }
-        if (this.right) {
-            movement.x = 1
-        }
-        if (this.jump) {
-            movement.y = 1
-        }
-        if (!this.jump) {
-            movement.y = -1
-        }
+loop(deltaTime) {
+    // Initialize the movement vector
+    const movement = new THREE.Vector3();
 
-        movement.normalize().multiplyScalar(deltaTime *25)
-        // movement.y = -1
-        
-        this.characterController.computeColliderMovement(this.collider, movement)
-        this.characterController.computedMovement()
-        
-        const newPosition = new THREE.Vector3()
-        .copy(this.rigidBody.translation())
-        .add(this.characterController.computedMovement())
-        
-
-
-        this.rigidBody.setNextKinematicTranslation(newPosition)
-
-        this.character.position.copy(this.rigidBody.translation())
+    // Determine rotation angles based on input
+    if (this.left) {
+        this.character.rotation.y += deltaTime * 2; // Rotate left (A key)
     }
+    if (this.right) {
+        this.character.rotation.y -= deltaTime * 2; // Rotate right (D key)
+    }
+
+    // Calculate the direction vector based on the character's rotation
+    const direction = new THREE.Vector3(0, 0, -1);
+    direction.applyQuaternion(this.character.quaternion);
+
+    // Forward and backward movement
+    if (this.forward) {
+        movement.add(direction);
+    }
+    if (this.backward) {
+        movement.sub(direction);
+    }
+
+    // Jumping and gravity
+    if (this.jump) {
+        movement.y += 1;
+    } else {
+        // Apply gravity when not jumping
+        movement.y -= 1;
+    }
+
+    // Normalize and scale the movement vector
+    if (movement.length() > 0) {
+        movement.normalize().multiplyScalar(deltaTime * 25);
+    }
+
+    // Apply movement
+    this.characterController.computeColliderMovement(this.collider, movement);
+    this.characterController.computedMovement();
+
+    const newPosition = new THREE.Vector3()
+        .copy(this.rigidBody.translation())
+        .add(this.characterController.computedMovement());
+
+    this.rigidBody.setNextKinematicTranslation(newPosition);
+
+    this.character.position.copy(this.rigidBody.translation());
+
+    // Ensure the character's rotation is updated in the physics engine if needed
+    this.rigidBody.setRotation(this.character.rotation);
+}
+
         
 }

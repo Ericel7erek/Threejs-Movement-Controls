@@ -9,7 +9,7 @@ export default class Camera{
     constructor() {
         this.app = new App()
         this.canvas = this.app.canvas
-
+        
         this.sizesStore = sizesStore
 
         this.sizes = this.sizesStore.getState()
@@ -46,5 +46,27 @@ export default class Camera{
 
     loop() {
         this.controls.update()
+        this.character = this.app.world.character?.rigidBody
+        if (this.character){
+            // Old way to set position directly
+            // const cameraPosition = this.character.translation()
+            // cameraPosition.z += 15
+            // cameraPosition.y += 30
+            // this.instance.position.copy(cameraPosition)     
+            const characterPosition = this.character.translation()
+            const characterRotation = this.character.rotation()
+            const cameraOffset = new THREE.Vector3(0,30,55)
+            cameraOffset.applyQuaternion(characterRotation)
+            cameraOffset.add(characterPosition)
+            
+            const targetOffset = new THREE.Vector3(0,10,0)
+            targetOffset.applyQuaternion(characterRotation)
+            targetOffset.add(characterPosition)
+
+            // this.instance.lookAt(LookAt)
+            this.instance.position.lerp(cameraOffset,0.05)      
+            this.controls.target.lerp(targetOffset,0.05)
+
+        }
     }
 }
