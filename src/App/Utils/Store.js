@@ -8,6 +8,7 @@ export const sizesStore = createStore(() => ({
 
 export const appStateStore = createStore(() => ({
     physicsReady: false,
+    appReady: false
 }));
 export const playerMovements = createStore(() => ({
     forward: false,

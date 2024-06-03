@@ -46,7 +46,8 @@ export default class Camera{
 
     loop() {
         this.controls.update()
-        this.character = this.app.world.character?.rigidBody
+        this.character = this.app.world.characterController?.rigidBody
+
         if (this.character){
             // Old way to set position directly
             // const cameraPosition = this.character.translation()
