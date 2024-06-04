@@ -65,7 +65,7 @@ export default class Camera{
             targetOffset.add(characterPosition)
 
             // this.instance.lookAt(LookAt)
-            this.instance.position.lerp(cameraOffset,0.1)      
+            this.instance.position.lerp(cameraOffset,0.1)
             this.controls.target.lerp(targetOffset,0.1)
 
         }

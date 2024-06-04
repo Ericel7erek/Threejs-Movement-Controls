@@ -10,7 +10,7 @@ import { appStateStore } from "../Utils/Store.js";
 export default class World {
   constructor() {
     this.app = new App();
-    console.log(this.app);
+
     this.scene = this.app.scene;
 
     this.physics = new Physics();

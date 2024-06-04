@@ -33,11 +33,12 @@ export default class Environment {
     this.groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
     this.scene.add(this.groundMesh);
     this.physics.add(this.groundMesh, "fixed", "cuboid");
+    console.log(this.groundMesh);
   }
 
   addWalls() {
     const wallMaterial = new THREE.MeshStandardMaterial({
-      color: "green",
+      color: "orange",
     });
 
     const wallGeometry = new THREE.BoxGeometry(100, 10, 1);
