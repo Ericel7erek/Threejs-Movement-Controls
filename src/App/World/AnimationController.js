@@ -14,7 +14,8 @@ export default class AnimationController{
         this.mixer =  new THREE.AnimationMixer(this.avatar.scene)
         const idleAction = this.mixer.clipAction(idle)
         const warmUpAction = this.mixer.clipAction(warmingUp)
-        warmUpAction.play()
+        // warmUpAction.play()
+        idleAction.play()
         
     }
     loop(deltaTime){
