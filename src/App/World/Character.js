@@ -8,6 +8,7 @@ export default class Character {
         this.scene = this.app.scene;
         this.assetStore = assetStore.getState()
         this.avatar = this.assetStore.loadedAssets.avatar
+        
         // Create Character and add it to the scene
         const geometry = new THREE.BoxGeometry(3,6,3);
         const material = new THREE.MeshStandardMaterial({ color: "rebeccapurple",wireframe:true,visible:false });

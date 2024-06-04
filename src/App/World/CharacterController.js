@@ -73,7 +73,10 @@ loop(deltaTime) {
     // Jumping and gravity
     if (this.jump) {
         movement.y += 1;
-    } 
+    } else {
+    movement.y = -1;
+
+    }
     
     if(movement.length()>0){
         const angle = Math.atan2(movement.x,movement.z) + Math.PI
@@ -84,7 +87,6 @@ loop(deltaTime) {
     }
     // Normalize and scale movement vector and set y component to -1
     movement.normalize().multiplyScalar(0.3);
-    movement.y = -1;
 
     // Update collider movement and get new position of rigid body
     this.characterController.computeColliderMovement(this.collider, movement);

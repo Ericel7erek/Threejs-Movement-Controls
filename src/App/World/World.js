@@ -6,6 +6,7 @@ import Environment from "./Environment.js";
 import Character from "./Character.js";
 import CharacterController from "./CharacterController.js";
 import { appStateStore } from "../Utils/Store.js";
+import AnimationController from "./AnimationController.js";
 
 export default class World {
   constructor() {
@@ -21,6 +22,7 @@ export default class World {
         this.environment = new Environment();
         this.character = new Character();
         this.characterController = new CharacterController()
+        this.animationController = new AnimationController()
       }
     });
 
@@ -30,5 +32,6 @@ export default class World {
   loop(deltaTime, elapsedTime) {
     this.physics.loop();
     if(this.characterController) this.characterController.loop(deltaTime)
+    if(this.animationController) this.animationController.loop(deltaTime)
   }
 }
