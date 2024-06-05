@@ -8,6 +8,7 @@ import App from './App.js'
 export default class Camera{
     constructor() {
         this.app = new App()
+        
         this.canvas = this.app.canvas
         
         this.sizesStore = sizesStore
@@ -56,7 +57,7 @@ export default class Camera{
             // this.instance.position.copy(cameraPosition)     
             const characterPosition = this.character.translation()
             const characterRotation = this.character.rotation()
-            const cameraOffset = new THREE.Vector3(0,30,55)
+            const cameraOffset = new THREE.Vector3(0,30,50)
             cameraOffset.applyQuaternion(characterRotation)
             cameraOffset.add(characterPosition)
             

@@ -33,7 +33,7 @@ export default class Environment {
     this.groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
     this.scene.add(this.groundMesh);
     this.physics.add(this.groundMesh, "fixed", "cuboid");
-    console.log(this.groundMesh);
+    
   }
 
   addWalls() {

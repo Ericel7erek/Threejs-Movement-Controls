@@ -78,13 +78,15 @@ loop(deltaTime) {
 
     }
     
-    if(movement.length()>0){
+    if(movement.length()>1){
+        console.log(movement.length());
         const angle = Math.atan2(movement.x,movement.z) + Math.PI
         const characterRotation= new THREE.Quaternion().setFromAxisAngle(
             new THREE.Vector3(0,1,0),
-            angle)
-        this.character.quaternion.slerp(characterRotation,0.1)
-    }
+            angle
+            )
+            this.character.quaternion.slerp(characterRotation,0.1)
+        }
     // Normalize and scale movement vector and set y component to -1
     movement.normalize().multiplyScalar(0.3);
 
