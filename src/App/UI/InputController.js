@@ -14,7 +14,6 @@ export default class InputController {
   
   KeyDown(event){
     if(!this.keyPressed[event.code]) { 
-      movingStore.setState({moving:true})
     switch (event.code) {
     case "KeyW":
     case "ArrowUp":
@@ -48,7 +47,6 @@ export default class InputController {
 
   }
   KeyUp(event){
-      movingStore.setState({moving:false})
     switch (event.code) {
     case "KeyW":
     case "ArrowUp":

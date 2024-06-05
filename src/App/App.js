@@ -36,5 +36,29 @@ export default class App{
         // extra utils
         this.loop = new Loop()
         this.resize = new Resize()
+        
+        this.setClickListener()
     }
+    setClickListener() {
+    this.canvas.addEventListener('click', () => {
+        this.toggleFullscreen();
+        this.toggleCursor();
+    })
+    }
+    toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        this.canvas.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+
+    if (this.canvas.style.cursor === 'none') {
+        this.canvas.style.cursor = 'auto';
+    } else {
+        this.canvas.style.cursor = 'none';
+    }
+    }
+    
 }

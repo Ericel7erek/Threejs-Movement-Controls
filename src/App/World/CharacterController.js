@@ -5,7 +5,8 @@ export default class CharacterController{
     constructor(){
         this.app = new App()
         this.character = this.app.world.character.character
-
+        this.camera = this.app.camera.instance
+        console.log(this.camera);
         this.physics = this.app.world.physics;
         
         playerMovements.subscribe((state)=>{
@@ -77,7 +78,7 @@ loop(deltaTime) {
     movement.y = -1;
 
     }
-    
+    movement.applyQuaternion(this.camera.quaternion)
     if(movement.length()>1){
         console.log(movement.length());
         const angle = Math.atan2(movement.x,movement.z) + Math.PI
@@ -85,7 +86,9 @@ loop(deltaTime) {
             new THREE.Vector3(0,1,0),
             angle
             )
-            this.character.quaternion.slerp(characterRotation,0.1)
+            this.character.quaternion.slerp(this.camera.quaternion,0.1)
+            // this.camera.quaternion.slerp(characterRotation,0.1)
+            // console.log(this.camera.quaternion);
         }
     // Normalize and scale movement vector and set y component to -1
     movement.normalize().multiplyScalar(0.3);
