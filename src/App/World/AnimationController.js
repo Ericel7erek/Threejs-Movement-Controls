@@ -42,22 +42,27 @@ export default class AnimationController {
         // Cast a ray downwards from the character's position
         this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-        if (intersects.map(inter=>{
-            if(inter.object.material.name === "ground") {
-                if(inter.distance <=10){
+         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
+        // console.log(onGround);
+        if (onGround) {
+                this.playAnimation("Idle");
             if (state.jump) {
                 this.playAnimation("Flying");
-            } else if (state.left || state.right || state.forward || state.backward && !state.jump) {
+            } 
+            if (state.left || state.right || state.forward || state.backward) {
                 this.playAnimation("SlowRun");
             } else {
                 this.playAnimation("Idle");
             }
-            }
-            }})){
-            }
+        } else {
+            if (state.jump) {
+                this.playAnimation("Flying");
+            } else if (state.left || state.right || state.forward || state.backward) {
+                this.playAnimation("Flying");
+        }
+            }}
 
-    }
-
+    
     loop(deltaTime) {
         this.mixer.update(deltaTime)
     }

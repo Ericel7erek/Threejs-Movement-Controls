@@ -1,30 +1,41 @@
 import * as THREE from "three";
 
 import App from "../App.js";
+import assetStore from "../Utils/AssetStore.js";
 
 export default class Environment {
   constructor() {
     this.app = new App();
     this.scene = this.app.scene;
     this.physics = this.app.world.physics;
-
+    this.asset=assetStore.getState().assetsToLoad[1]
+    console.log(this.asset);
+    this.planets = []
     this.loadEnvironment();
     this.addGround();
     this.addWalls();
     this.addStairs();
     this.addMeshes();
+    this.addBackground();
+    this.addPlanets()
   }
 
   loadEnvironment() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
-
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.directionalLight.position.set(1, 1, 1);
     this.directionalLight.castShadow = true;
     this.scene.add(this.directionalLight);
   }
+  addBackground(){
+    const cubeTextureLoader = new THREE.CubeTextureLoader()
+    cubeTextureLoader.setPath(this.asset.path)
+    const backgroundCubemap = cubeTextureLoader
+    .load(this.asset.faces);
 
+this.scene.background = backgroundCubemap
+  }
   addGround() {
     const groundGeometry = new THREE.BoxGeometry(100, 1, 100);
     const groundMaterial = new THREE.MeshStandardMaterial({
@@ -88,6 +99,24 @@ export default class Environment {
     });
   }
 
+    addPlanets() {
+    const planetGeometry = new THREE.SphereGeometry(1000, 32, 32);
+    const planetMaterial = new THREE.MeshStandardMaterial({ color: 'blue' });
+
+    const planetPositions = [
+      { x: 20, y: 10, z: -3000 },
+      { x: -2000, y: 15, z: 40 },
+      { x: 30, y: 5, z: 6000 },
+    ];
+
+    planetPositions.forEach((position, index) => {
+      const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+      planet.position.set(position.x, position.y, position.z);
+      this.scene.add(planet);
+      this.physics.add(planet, "fixed","ball")
+      this.planets.push({ mesh: planet, projectIndex: index });
+    });
+  }
   addMeshes() {
     const geometry = new THREE.SphereGeometry(1, 32, 32);
     const material = new THREE.MeshStandardMaterial({

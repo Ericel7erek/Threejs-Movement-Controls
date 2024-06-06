@@ -19,4 +19,5 @@ export const playerMovements = createStore(() => ({
     left: false,
     right: false,
     jump: false,
+    super: false
 }));

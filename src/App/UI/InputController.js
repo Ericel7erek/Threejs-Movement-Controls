@@ -42,6 +42,10 @@ export default class InputController {
       
       playerMovements.setState({jump: true})
     break;
+
+    case "ShiftLeft":
+    playerMovements.setState({super: true})
+    break;
     }}
     this.keyPressed[event.code] = true
 
@@ -71,9 +75,13 @@ export default class InputController {
       
       playerMovements.setState({right: false})
     break;
+
     case "Space":
-    
     playerMovements.setState({jump: false})
+    break;
+
+    case "ShiftLeft":
+    playerMovements.setState({super: false})
     break;
     }
     this.keyPressed[event.code] = false

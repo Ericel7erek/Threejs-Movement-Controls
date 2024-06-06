@@ -8,6 +8,8 @@ export default class CharacterController{
         this.camera = this.app.camera.instance
         console.log(this.camera);
         this.physics = this.app.world.physics;
+        this.raycaster = new THREE.Raycaster();
+        this.scene = this.app.scene
         
         playerMovements.subscribe((state)=>{
         this.forward = state.forward
@@ -15,6 +17,7 @@ export default class CharacterController{
         this.left = state.left
         this.right = state.right
         this.jump = state.jump
+        this.super = state.super
         })
 
         this.instantiateCharacter();
@@ -52,35 +55,48 @@ export default class CharacterController{
     }
 
 loop(deltaTime) {
+this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
+// Initialize the movement vector
+const movement = new THREE.Vector3();
 
-    // Initialize the movement vector
-    const movement = new THREE.Vector3();
+// Determine rotation angles based on input
+if (this.left) {
+    movement.x -= 1; // Rotate left (A key)
+}
+if (this.right) {
+    movement.x += 1; // Rotate right (D key)
+}
+// Forward and backward movement
+if (this.forward) {
+    movement.z -= 1;
+}
+if (this.backward) {
+    movement.z += 1;
+}
 
-    // Determine rotation angles based on input
-    if (this.left) {
-        movement.x -= 1; // Rotate left (A key)
-    }
-    if (this.right) {
-        movement.x += 1; // Rotate right (D key)
-    }
-    // Forward and backward movement
-    if (this.forward) {
-        movement.z -= 1
-    }
-    if (this.backward) {
-        movement.z += 1
-    }
+// Jumping and gravity
+if (this.jump) {
+    movement.y += 1;
+} 
+else if(onGround){
 
-    // Jumping and gravity
-    if (this.jump) {
-        movement.y += 1;
-    } else {
-    movement.y = -1;
+    movement.y -=1
+}
 
-    }
+// Determine the speed multiplier
+let speedMultiplier = 1;
+
+if (this.super) {
+    speedMultiplier = 10;
+}
+movement.multiplyScalar(speedMultiplier)
+
+
     movement.applyQuaternion(this.camera.quaternion)
-    if(movement.length()>1){
-        console.log(movement.length());
+    // // if(movement.length()>1){
+    //     console.log(movement.length());
         const angle = Math.atan2(movement.x,movement.z) + Math.PI
         const characterRotation= new THREE.Quaternion().setFromAxisAngle(
             new THREE.Vector3(0,1,0),
@@ -89,9 +105,9 @@ loop(deltaTime) {
             this.character.quaternion.slerp(this.camera.quaternion,0.1)
             // this.camera.quaternion.slerp(characterRotation,0.1)
             // console.log(this.camera.quaternion);
-        }
+        // }
     // Normalize and scale movement vector and set y component to -1
-    movement.normalize().multiplyScalar(0.3);
+    // movement.normalize().multiplyScalar(0.3);
 
     // Update collider movement and get new position of rigid body
     this.characterController.computeColliderMovement(this.collider, movement);

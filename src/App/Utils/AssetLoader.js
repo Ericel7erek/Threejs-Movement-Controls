@@ -21,6 +21,8 @@ export default class AssetLoader {
         this.gltfLoader = new GLTFLoader()
         this.gltfLoader.setDRACOLoader(dracoLoader)
         this.textureLoader = new THREE.TextureLoader()
+        this.cubeTextureLoader = new THREE.CubeTextureLoader()
+
     }
 
     startLoading() {
@@ -32,6 +34,11 @@ export default class AssetLoader {
             }
             if (asset.type === 'model') {
                 this.gltfLoader.load(asset.path, (loadedAsset)=>{
+                    this.addLoadedAsset(loadedAsset, asset.id)
+                })
+            }
+            if (asset.type === 'cubeTexture') {
+                this.cubeTextureLoader.setPath(asset.path).load(asset.faces, (loadedAsset)=>{
                     this.addLoadedAsset(loadedAsset, asset.id)
                 })
             }

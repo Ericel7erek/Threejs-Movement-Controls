@@ -22,7 +22,7 @@ export default class Camera {
             35,
             this.sizes.width / this.sizes.height,
             1,
-            600
+            20000
         );
         this.instance.position.z = 100
         this.instance.position.y = 20
@@ -31,10 +31,24 @@ export default class Camera {
     setMouseControls() {
         this.mouseX = 0;
         this.mouseY = 0;
+        this.isMouseLocked = true;
 
-        this.canvas.addEventListener('mousemove', (event) => {
-            this.mouseX = event.clientX - this.sizes.width / 2;
-            this.mouseY = event.clientY - this.sizes.height / 2;
+        // Request pointer lock on click
+        this.canvas.addEventListener('click', () => {
+    
+        });
+
+        // Handle mouse movement when locked
+        document.addEventListener('mousemove', (event) => {
+            if (this.isMouseLocked) {
+                this.mouseX += event.movementX;
+                this.mouseY += event.movementY;
+
+                // Warp the cursor back to the center when it reaches the edges
+                if (Math.abs(this.mouseX) > this.sizes.width / 2 || Math.abs(this.mouseY) > this.sizes.height / 2) {
+                    this.canvas.requestPointerLock();
+                }
+            }
         });
     }
 
@@ -45,23 +59,31 @@ export default class Camera {
         })
     }
 
-    loop() {
-        this.character = this.app.world.characterController?.rigidBody;
+loop() {
+    this.character = this.app.world.characterController?.rigidBody;
 
-        if (this.character) {
-            const characterPosition = this.character.translation();
-            const cameraOffset = new THREE.Vector3(0, 2, 5); // Adjust the offset as needed
-            cameraOffset.applyQuaternion(this.instance.quaternion);
-            cameraOffset.add(characterPosition);
+    if (this.character) {
+        const characterPosition = this.character.translation();
+        const cameraOffset = new THREE.Vector3(0, 2, 15); // Adjust the offset as needed
+        const cameraRotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, 0, 'XYZ'));
 
-            this.instance.position.lerp(cameraOffset,0.1);
+        cameraOffset.applyQuaternion(cameraRotation);
+        cameraOffset.add(characterPosition);
 
-            // Update camera rotation based on mouse movement
-            this.instance.rotation.y = -this.mouseX * 0.01;
-            // this.instance.rotation.x = -this.mouseY * 0.002;
+        // Smoothly interpolate the camera's position to the desired position
+        this.instance.position.lerp(cameraOffset, 0.08);
 
-            // Update character rotation to match camera rotation
-            // this.character.setRotation(this.instance.quaternion);
-        }
+        // Update camera rotation based on mouse movement
+        const targetRotationX = this.mouseY * 0.002;
+        this.instance.rotation.x = THREE.MathUtils.lerp(this.instance.rotation.x, targetRotationX, 0.1);
+        const targetRotationY = -this.mouseX * 0.006;
+        this.instance.rotation.y = THREE.MathUtils.lerp(this.instance.rotation.y, targetRotationY, 0.1);
+
+        // Only update the character's Y-axis rotation to match the camera's Y-axis rotation
+        const characterQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, this.instance.rotation.y, 0));
+        this.character.setRotation(characterQuaternion);
     }
+}
+
+
 }
