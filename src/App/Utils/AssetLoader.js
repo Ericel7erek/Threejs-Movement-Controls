@@ -38,10 +38,10 @@ export default class AssetLoader {
                 })
             }
             if (asset.type === 'cubeTexture') {
-                this.cubeTextureLoader.setPath(asset.path).load(asset.faces, (loadedAsset)=>{
-                    this.addLoadedAsset(loadedAsset, asset.id)
-                })
-            }
+                this.cubeTextureLoader.setPath(asset.path);
+                this.cubeTextureLoader.load(asset.faces, (loadedAsset) => {
+                    this.addLoadedAsset(loadedAsset, asset.id);
+            });}
         })
     }
 }

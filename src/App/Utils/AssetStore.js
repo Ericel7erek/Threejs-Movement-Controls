@@ -10,7 +10,13 @@ const assetsToLoad = [
     type: 'cubeTexture', 
     path: '/Standard-Cube-Map (2)/', 
     id: 'backgroundTexture', 
-    faces: ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'] } 
+    faces: ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'] 
+  },
+  {
+    id: "planet",
+    path: "/2k_mercury.jpg",
+    type: "texture"
+  },
 ];
 
 const assetStore = createStore((set) => ({

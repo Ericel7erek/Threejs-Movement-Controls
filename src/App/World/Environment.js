@@ -9,6 +9,7 @@ export default class Environment {
     this.scene = this.app.scene;
     this.physics = this.app.world.physics;
     this.asset=assetStore.getState().assetsToLoad[1]
+    this.asset2=assetStore.getState().assetsToLoad[2]
     console.log(this.asset);
     this.planets = []
     this.loadEnvironment();
@@ -34,7 +35,7 @@ export default class Environment {
     const backgroundCubemap = cubeTextureLoader
     .load(this.asset.faces);
 
-this.scene.background = backgroundCubemap
+  this.scene.background = backgroundCubemap
   }
   addGround() {
     const groundGeometry = new THREE.BoxGeometry(100, 1, 100);
@@ -102,7 +103,6 @@ this.scene.background = backgroundCubemap
     addPlanets() {
     const planetGeometry = new THREE.SphereGeometry(1000, 32, 32);
     const planetMaterial = new THREE.MeshStandardMaterial({ color: 'blue' });
-
     const planetPositions = [
       { x: 20, y: 10, z: -3000 },
       { x: -2000, y: 15, z: 40 },
