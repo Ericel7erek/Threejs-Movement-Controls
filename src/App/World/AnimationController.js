@@ -39,10 +39,11 @@ export default class AnimationController {
     }
 
     moving(state) {
+        console.log(this.character,"An");
         // Cast a ray downwards from the character's position
         this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
+        const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
         // console.log(onGround);
         if (onGround) {
                 this.playAnimation("Idle");
