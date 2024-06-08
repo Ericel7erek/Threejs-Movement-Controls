@@ -7,11 +7,11 @@ export default class Camera {
         this.app = new App()
 
         this.canvas = this.app.canvas
-
+        this.scene = this.app.scene
         this.sizesStore = sizesStore
 
         this.sizes = this.sizesStore.getState()
-
+        this.raycaster = new THREE.Raycaster()
         this.setInstance()
         this.setMouseControls()
         this.setResizeLister()
@@ -66,7 +66,9 @@ loop() {
         const characterPosition = this.character.translation();
         const cameraOffset = new THREE.Vector3(0, 2, 15); // Adjust the offset as needed
         const cameraRotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, 0, 'XYZ'));
-
+        this.raycaster.set(this.instance.position, new THREE.Vector3(0, -1, 0));
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+        const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
         cameraOffset.applyQuaternion(cameraRotation);
         cameraOffset.add(characterPosition);
 
@@ -74,10 +76,11 @@ loop() {
         this.instance.position.lerp(cameraOffset, 0.08);
 
         // Update camera rotation based on mouse movement
-        const targetRotationX = this.mouseY * 0.002;
+        const targetRotationX = onGround?0: this.mouseY * 0.002;
         this.instance.rotation.x = THREE.MathUtils.lerp(this.instance.rotation.x, targetRotationX, 0.1);
         const targetRotationY = -this.mouseX * 0.006;
         this.instance.rotation.y = THREE.MathUtils.lerp(this.instance.rotation.y, targetRotationY, 0.1);
+        this.instance.rotation.z = onGround? 0 : this.instance.rotation.z
 
         // Only update the character's Y-axis rotation to match the camera's Y-axis rotation
         const characterQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, this.instance.rotation.y, 0));

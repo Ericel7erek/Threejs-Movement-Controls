@@ -46,11 +46,11 @@ export default class AnimationController {
         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
         // console.log(onGround);
         if (onGround) {
-                this.playAnimation("Idle");
+            
             if (state.jump) {
                 this.playAnimation("Flying");
             } 
-            if (state.left || state.right || state.forward || state.backward) {
+            else if (state.left || state.right || state.forward || state.backward) {
                 this.playAnimation("SlowRun");
             } else {
                 this.playAnimation("Idle");

@@ -55,9 +55,9 @@ export default class CharacterController{
     }
 
 loop(deltaTime) {
-this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
+        this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
+        const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
 // Initialize the movement vector
 const movement = new THREE.Vector3();
 
@@ -92,8 +92,6 @@ if (this.super) {
     speedMultiplier = 10;
 }
 movement.multiplyScalar(speedMultiplier)
-
-
     movement.applyQuaternion(this.camera.quaternion)
     // // if(movement.length()>1){
     //     console.log(movement.length());
@@ -107,7 +105,7 @@ movement.multiplyScalar(speedMultiplier)
             // console.log(this.camera.quaternion);
         // }
     // Normalize and scale movement vector and set y component to -1
-    // movement.normalize().multiplyScalar(0.3);
+ onGround? movement.normalize().multiplyScalar(0.3): null
 
     // Update collider movement and get new position of rigid body
     this.characterController.computeColliderMovement(this.collider, movement);
