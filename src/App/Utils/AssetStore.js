@@ -3,7 +3,7 @@ import { createStore } from "zustand/vanilla";
 const assetsToLoad = [
   {
     id: "avatar",
-    path: "/model/avatar.glb",
+    path: "/model/Avatarism.glb",
     type: "model"
   },
   { 

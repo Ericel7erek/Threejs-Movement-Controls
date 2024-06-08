@@ -50,8 +50,12 @@ export default class AnimationController {
             if (state.jump) {
                 this.playAnimation("Flying");
             } 
-            else if (state.left || state.right || state.forward || state.backward) {
+            else if ( state.forward || state.backward) {
                 this.playAnimation("SlowRun");
+            } else if(state.right){
+                this.playAnimation("StrafeRight");
+            } else if(state.left){
+                this.playAnimation("StrafeLeft");
             } else {
                 this.playAnimation("Idle");
             }

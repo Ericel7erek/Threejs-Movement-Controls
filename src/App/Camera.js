@@ -76,10 +76,8 @@ loop() {
         this.instance.position.lerp(cameraOffset, 0.08);
 
         // Update camera rotation based on mouse movement
-        const targetRotationX = onGround?0: this.mouseY * 0.002;
-        this.instance.rotation.x = THREE.MathUtils.lerp(this.instance.rotation.x, targetRotationX, 0.1);
-        const targetRotationY = -this.mouseX * 0.006;
-        this.instance.rotation.y = THREE.MathUtils.lerp(this.instance.rotation.y, targetRotationY, 0.1);
+        this.instance.rotation.x = onGround?0: this.mouseY * 0.002;
+        this.instance.rotation.y = -this.mouseX * 0.006;
         this.instance.rotation.z = onGround? 0 : this.instance.rotation.z
 
         // Only update the character's Y-axis rotation to match the camera's Y-axis rotation

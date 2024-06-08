@@ -18,6 +18,7 @@ export default class CharacterController{
         this.right = state.right
         this.jump = state.jump
         this.super = state.super
+        this.descending = state.descending
         })
 
         this.instantiateCharacter();
@@ -75,15 +76,20 @@ if (this.forward) {
 if (this.backward) {
     movement.z += 1;
 }
-
+if(this.descending){
+    movement.y -= 1;
+}
 // Jumping and gravity
 if (this.jump) {
     movement.y += 1;
-} 
+}
+
+
 else if(onGround){
 
     movement.y -=1
 }
+
 
 // Determine the speed multiplier
 let speedMultiplier = 1;
