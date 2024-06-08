@@ -71,7 +71,6 @@ loop() {
         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
         cameraOffset.applyQuaternion(cameraRotation);
         cameraOffset.add(characterPosition);
-
         // Smoothly interpolate the camera's position to the desired position
         this.instance.position.lerp(cameraOffset, 0.08);
 
