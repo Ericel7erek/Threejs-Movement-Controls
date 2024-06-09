@@ -80,7 +80,8 @@ console.log(this.sound);
                 this.sound.play();
             }   else {
                 this.playAnimation("Idle");
-                this.sound.stop()
+                if(this.sound.isPlaying)
+                {this.sound.stop()}
             }
         } else {
             if (state.jump) {
