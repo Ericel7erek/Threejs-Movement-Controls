@@ -36,16 +36,16 @@ export default class AnimationController {
 
     // create a global audio source
     this.sound = new THREE.Audio( listener );
-
+        const file = './sounds/Largo.ogg';
     // load a sound and set it as the Audio object's buffer
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'sounds/Largo.ogg', function( buffer ) {
+    audioLoader.load( file, (buffer)=> {
     this.sound.setBuffer( buffer );
     this.sound.setLoop( true );
     this.sound.setVolume( 0.5 );
-    this.sound.play();
+    // this.sound.play();
 });
-console.log(audioLoader);
+console.log(this.sound);
     }
     playAnimation(name) {
         if (this.currentAnimation === this.animation.get(name)) return
