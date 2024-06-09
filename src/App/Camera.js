@@ -64,11 +64,11 @@ loop() {
 
     if (this.character) {
         const characterPosition = this.character.translation();
-        const cameraOffset = new THREE.Vector3(0, 2, 15); // Adjust the offset as needed
+        const cameraOffset = new THREE.Vector3(0, 2, 18); // Adjust the offset as needed
         const cameraRotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, 0, 'XYZ'));
         this.raycaster.set(this.instance.position, new THREE.Vector3(0, -1, 0));
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-        const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
+        const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=15);
         cameraOffset.applyQuaternion(cameraRotation);
         cameraOffset.add(characterPosition);
         // Smoothly interpolate the camera's position to the desired position
@@ -80,7 +80,7 @@ loop() {
         this.instance.rotation.z = onGround? 0 : this.instance.rotation.z
 
         // Only update the character's Y-axis rotation to match the camera's Y-axis rotation
-        const characterQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, this.instance.rotation.y, 0));
+        const characterQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, this.instance.rotation.z));
         this.character.setRotation(characterQuaternion);
     }
 }
