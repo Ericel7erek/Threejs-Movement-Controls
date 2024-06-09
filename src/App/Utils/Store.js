@@ -20,5 +20,6 @@ export const playerMovements = createStore(() => ({
     right: false,
     jump: false,
     super: false,
-    descending: false
+    descending: false,
+    dance: false
 }));

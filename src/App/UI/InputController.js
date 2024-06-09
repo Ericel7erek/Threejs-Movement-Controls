@@ -50,6 +50,10 @@ export default class InputController {
     case "ControlLeft":
     playerMovements.setState({descending: true})
     break;
+    
+    case "KeyF":
+    playerMovements.setState({dance: true})
+    break;
     }}
     this.keyPressed[event.code] = true
 
@@ -90,6 +94,10 @@ export default class InputController {
 
     case "ControlLeft":
     playerMovements.setState({descending: false})
+    break;
+
+    case "KeyF":
+    playerMovements.setState({dance: false})
     break;
     }
     this.keyPressed[event.code] = false

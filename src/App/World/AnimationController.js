@@ -8,12 +8,14 @@ export default class AnimationController {
         this.scene = this.app.scene
         this.avatar = this.app.world.character.avatar
         this.character = this.app.world.character.character
-        console.log(this.character);
+        this.camera = this.app.camera.instance
+        console.log();
         this.raycaster = new THREE.Raycaster();
         playerMovements.subscribe((state) => {
             this.moving(state)
         })
         this.initAnimations()
+        this.initSounds()
     }
 
     initAnimations() {
@@ -28,6 +30,23 @@ export default class AnimationController {
         this.currentAnimation.play()
     }
 
+    initSounds(){
+    const listener = new THREE.AudioListener();
+    this.camera.add( listener );
+
+    // create a global audio source
+    this.sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'sounds/Largo.ogg', function( buffer ) {
+    this.sound.setBuffer( buffer );
+    this.sound.setLoop( true );
+    this.sound.setVolume( 0.5 );
+    this.sound.play();
+});
+console.log(audioLoader);
+    }
     playAnimation(name) {
         if (this.currentAnimation === this.animation.get(name)) return
         const action = this.animation.get(name)
@@ -56,8 +75,12 @@ export default class AnimationController {
                 this.playAnimation("StrafeRight");
             } else if(state.left){
                 this.playAnimation("StrafeLeft");
-            } else {
+            } else if(state.dance){
+                this.playAnimation("ChickenDance");
+                this.sound.play();
+            }   else {
                 this.playAnimation("Idle");
+                this.sound.stop()
             }
         } else {
             if (state.jump) {
