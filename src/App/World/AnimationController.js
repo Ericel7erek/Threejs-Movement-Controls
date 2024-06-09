@@ -47,6 +47,7 @@ export default class AnimationController {
 });
 console.log(this.sound);
     }
+    
     playAnimation(name) {
         if (this.currentAnimation === this.animation.get(name)) return
         const action = this.animation.get(name)
