@@ -24,8 +24,6 @@ export default class Camera {
             1,
             20000
         );
-        this.instance.position.z = 100
-        this.instance.position.y = 20
     }
 
     setMouseControls() {
@@ -66,7 +64,8 @@ loop() {
         const characterPosition = this.character.translation();
         const cameraOffset = new THREE.Vector3(0, 2, 18); // Adjust the offset as needed
         const cameraRotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, 0, 'XYZ'));
-        this.raycaster.set(this.instance.position, new THREE.Vector3(0, -1, 0));
+        const desiredCameraPosition = new THREE.Vector3().copy(characterPosition);
+        this.raycaster.set(desiredCameraPosition, new THREE.Vector3(0, -1, 0));
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
         const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=15);
         cameraOffset.applyQuaternion(cameraRotation);
