@@ -31,22 +31,43 @@ export default class AnimationController {
     }
 
     initSounds(){
+    this.sounds = new Map();
     const listener = new THREE.AudioListener();
-    this.camera.add( listener );
+    this.camera.add(listener);
 
     // create a global audio source
-    this.sound = new THREE.Audio( listener );
-        const file = './sounds/Largo.ogg';
-    // load a sound and set it as the Audio object's buffer
+    const soundFiles = {
+    background: './sounds/Largo.ogg',
+    chickenDance: './sounds/ChickenDance.ogg',
+    // Add more sounds as needed
+    };
+
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( file, (buffer)=> {
-    this.sound.setBuffer( buffer );
-    this.sound.setLoop( true );
-    this.sound.setVolume( 0.5 );
-    // this.sound.play();
-});
-console.log(this.sound);
+
+    Object.keys(soundFiles).forEach((key) => {
+    const sound = new THREE.Audio(listener);
+    audioLoader.load(soundFiles[key], (buffer) => {
+        sound.setBuffer(buffer);
+        sound.setLoop(key); // Only loop background sound
+        sound.setVolume(0.5);
+        this.sounds.set(key, sound);
+    });
+    });
     }
+    playSound(name) {
+    const sound = this.sounds.get(name);
+    if (sound && !sound.isPlaying) {
+        sound.play();
+    }
+    }
+
+    stopSound(name) {
+    const sound = this.sounds.get(name);
+    if (sound && sound.isPlaying) {
+        sound.stop();
+    }
+    }
+
     
     playAnimation(name) {
         if (this.currentAnimation === this.animation.get(name)) return
@@ -58,39 +79,43 @@ console.log(this.sound);
         this.currentAnimation = action
     }
 
-    moving(state) {
-        console.log(this.character,"An");
-        // Cast a ray downwards from the character's position
-        this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
-        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-        const onGround = intersects.some(intersect => intersect.object.type!=='SkinnedMesh'&&intersect.distance <=10);
-        // console.log(onGround);
-        if (onGround) {
-            
-            if (state.jump) {
-                this.playAnimation("Flying");
-            } 
-            else if ( state.forward || state.backward) {
-                this.playAnimation("SlowRun");
-            } else if(state.right){
-                this.playAnimation("StrafeRight");
-            } else if(state.left){
-                this.playAnimation("StrafeLeft");
-            } else if(state.dance){
-                this.playAnimation("ChickenDance");
-                this.sound.play();
-            }   else {
-                this.playAnimation("Idle");
-                if(this.sound.isPlaying)
-                {this.sound.stop()}
-            }
+moving(state) {
+    console.log(this.character, "An");
+    // Cast a ray downwards from the character's position
+    this.raycaster.set(this.character.position, new THREE.Vector3(0, -1, 0));
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+    const onGround = intersects.some(intersect => intersect.object.type !== 'SkinnedMesh' && intersect.distance <= 10);
+    
+    if (onGround) {
+        if (state.jump) {
+            this.playAnimation("Flying");
+        } 
+        else if (state.forward || state.backward) {
+            this.playAnimation("SlowRun");
+        } else if (state.right) {
+            this.playAnimation("StrafeRight");
+        } else if (state.left) {
+            this.playAnimation("StrafeLeft");
+        } else if (state.dance) {
+            this.playAnimation("ChickenDance");
+            this.playSound('chickenDance');
         } else {
-            if (state.jump) {
-                this.playAnimation("Flying");
-            } else if (state.left || state.right || state.forward || state.backward) {
-                this.playAnimation("Flying");
+            this.playAnimation("Idle");
+            if (this.sounds.get('chickenDance')?.isPlaying) {
+                this.stopSound('chickenDance');
+            }
+            // this.playSound('background');
+
         }
-            }}
+    } else {
+        if (state.jump) {
+            this.playAnimation("Flying");
+        } else if (state.left || state.right || state.forward || state.backward) {
+            this.playAnimation("Flying");
+        }
+    }
+}
+
 
     
     loop(deltaTime) {
