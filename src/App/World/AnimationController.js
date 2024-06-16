@@ -39,6 +39,7 @@ export default class AnimationController {
     const soundFiles = {
     background: './sounds/Largo.ogg',
     chickenDance: './sounds/ChickenDance.ogg',
+    flying: './sounds/flying.ogg',
     // Add more sounds as needed
     };
 
