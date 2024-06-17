@@ -41,7 +41,7 @@ export default class App{
     }
     
     setClickListener() {
-    this.canvas.addEventListener('click', () => {
+    this.canvas.addEventListener('ShiftRight', () => {
     if (!document.fullscreenElement) {
     this.canvas.requestFullscreen();
     } else {

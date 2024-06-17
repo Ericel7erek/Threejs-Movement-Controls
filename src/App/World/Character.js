@@ -9,7 +9,6 @@ export default class Character {
         this.assetStore = assetStore.getState()
         this.avatar = this.assetStore.loadedAssets.avatar
 
-
         
         // Create Character and add it to the scene
         const geometry = new THREE.BoxGeometry(3,6,3);
@@ -24,8 +23,13 @@ export default class Character {
         avatar.rotation.y = Math.PI
         console.log(avatar);
         this.character.add(avatar)
-        // const pointLight = new THREE.PointLight({color:"gold",intensity: 0.1,distance:20})
-        // this.character.add(pointLight)
+        // const pointLight = new THREE.PointLight('gold', 1,2000)
+        // const sphGeo= new THREE.SphereGeometry(1,32,16)
+        // const sphMat= new THREE.MeshStandardMaterial({color:"white"})
+        // this.sphere= new THREE.Mesh(sphGeo,sphMat)
+        // this.sphere.scale.setScalar(10)
+        // this.scene.add(this.sphere)
+        // this.sphere.add(pointLight)
     }
         
 }

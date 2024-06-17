@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import App from "../App.js";
 import assetStore from "../Utils/AssetStore.js";
+import { Pane } from "tweakpane";
 
 export default class Environment {
   constructor() {
@@ -10,15 +11,16 @@ export default class Environment {
     this.physics = this.app.world.physics;
     this.asset=assetStore.getState().assetsToLoad[1]
     this.texture=assetStore.getState().loadedAssets.texture
-    console.log(this.asset);
-    this.planets = []
+    this.assetStore = assetStore.getState()
+    this.station = this.assetStore.loadedAssets.station
+    this.pane = new Pane()
     this.loadEnvironment();
     this.addGround();
     this.addWalls();
     this.addStairs();
     this.addMeshes();
     this.addBackground();
-    this.addPlanets()
+    this.addStations()
   }
 
   loadEnvironment() {
@@ -99,24 +101,54 @@ export default class Environment {
       this.physics.add(stairMesh, "fixed", "cuboid");
     });
   }
-
-    addPlanets() {
-    const planetGeometry = new THREE.SphereGeometry(1000, 32, 32);
-    const planetMaterial = new THREE.MeshStandardMaterial({ color: 'blue',map: this.texture,});
-    const planetPositions = [
-      { x: 20, y: 10, z: -3000 },
-      { x: -2000, y: 15, z: 40 },
-      { x: 30, y: 5, z: 6000 },
-    ];
-
-    planetPositions.forEach((position, index) => {
-      const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-      planet.position.set(position.x, position.y, position.z);
-      this.scene.add(planet);
-      this.physics.add(planet, "fixed","ball")
-      this.planets.push({ mesh: planet, projectIndex: index });
-    });
+  addStations(){
+    
+    const station = this.station.scene
+    console.log(this.station);
+    const donutGeo= new THREE.TorusGeometry(1,0.4,12,48,Math.PI*2)
+    const donutMesh = new THREE.MeshStandardMaterial({color:'gold',wireframe:true})
+    this.donut = new THREE.Mesh(donutGeo,donutMesh)
+    station.scale.setScalar(100)
+    this.donut.position.set(0,100,0)
+    this.donut.scale.setScalar(200)
+    this.donut.rotation.x = 1.04
+    this.donut.rotation.y = 0.20
+    // this.donut.position.x = -50
+    const axesHelper = new THREE.AxesHelper( 500 );
+    this.pane.addBinding(this.donut, "rotation",{
+    X:{
+      min: 0,
+      max: 360,
+      scale: 1
+    },
+    Y:{
+      min: 0,
+      max: 360,
+      scale: 1
+    }
+  })
+    this.pane.addBinding(this.donut, "position",{
+    X:{
+      min: 0,
+      max: 360,
+      scale: 1
+    },
+    Y:{
+      min: 0,
+      max: 360,
+      scale: 1
+    },
+    Z:{
+      min: 0,
+      max: 360,
+      scale: 1
+    }
+  })
+    this.scene.add(station,this.donut)
+    this.donut.add(axesHelper)
+    this.physics.add(this.donut, "fixed", "trimesh");
   }
+
   addMeshes() {
     const geometry = new THREE.SphereGeometry(1, 32, 32);
     const material = new THREE.MeshStandardMaterial({

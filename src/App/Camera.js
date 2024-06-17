@@ -32,7 +32,7 @@ export default class Camera {
         this.isMouseLocked = true;
 
         // Request pointer lock on click
-        this.canvas.addEventListener('click', () => {
+        this.canvas.addEventListener('ShiftRight', () => {
     
         });
 
