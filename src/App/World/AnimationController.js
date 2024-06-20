@@ -9,7 +9,8 @@ export default class AnimationController {
         this.avatar = this.app.world.character.avatar
         this.character = this.app.world.character.character
         this.camera = this.app.camera.instance
-        console.log();
+        this.station = this.app.world.environment.stationAll
+        console.log(this.station);
         this.raycaster = new THREE.Raycaster();
         playerMovements.subscribe((state) => {
             this.moving(state)
@@ -20,12 +21,17 @@ export default class AnimationController {
 
     initAnimations() {
         this.animation = new Map()
+        this.animation1 = new Map()
         this.mixer = new THREE.AnimationMixer(this.avatar.scene)
-
+        this.mixer1 = new THREE.AnimationMixer(this.station.scene)
+        this.station.animations.forEach((clip)=> {
+            this.animation1.set(clip.name, this.mixer1.clipAction(clip))
+        })
         this.avatar.animations.forEach((clip) => {
             this.animation.set(clip.name, this.mixer.clipAction(clip))
         })
         console.log(this.animation);
+        this.animation1.get('Animation').play()
         this.currentAnimation = this.animation.get('Idle')
         this.currentAnimation.play()
     }
@@ -90,29 +96,40 @@ moving(state) {
     if (onGround) {
         if (state.jump) {
             this.playAnimation("Flying");
+            this.playSound('flying');
+
         } 
         else if (state.forward || state.backward) {
             this.playAnimation("SlowRun");
+            this.stopSound('flying')
+
         } else if (state.right) {
             this.playAnimation("StrafeRight");
+            this.stopSound('flying')
         } else if (state.left) {
             this.playAnimation("StrafeLeft");
+            this.stopSound('flying')
         } else if (state.dance) {
             this.playAnimation("ChickenDance");
             this.playSound('chickenDance');
+            this.stopSound('flying')
+
         } else {
             this.playAnimation("Idle");
             if (this.sounds.get('chickenDance')?.isPlaying) {
                 this.stopSound('chickenDance');
             }
+            this.stopSound('flying')
             // this.playSound('background');
 
         }
     } else {
         if (state.jump) {
             this.playAnimation("Flying");
+            this.playSound('flying');
         } else if (state.left || state.right || state.forward || state.backward) {
             this.playAnimation("Flying");
+            this.playSound('flying');
         }
     }
 }

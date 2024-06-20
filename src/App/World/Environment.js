@@ -102,12 +102,13 @@ export default class Environment {
     });
   }
   addStations(){
+    this.stationAll = this.station
     
-    const station = this.station.scene
+    this.station = this.station.scene
     // this.donut = new THREE.Mesh(donutGeo,donutMesh)
-    station.scale.setScalar(100)
-    this.scene.add(station)
-    station.traverse((obj)=>{
+    this.station.scale.setScalar(100)
+    this.scene.add(this.station)
+    this.station.traverse((obj)=>{
       if(obj.isMesh){
         this.physics.add(obj, "fixed", "trimesh")
       }
