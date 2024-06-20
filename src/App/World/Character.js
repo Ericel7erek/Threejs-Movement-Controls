@@ -23,13 +23,6 @@ export default class Character {
         avatar.rotation.y = Math.PI
         console.log(avatar);
         this.character.add(avatar)
-        // const pointLight = new THREE.PointLight('gold', 1,2000)
-        // const sphGeo= new THREE.SphereGeometry(1,32,16)
-        // const sphMat= new THREE.MeshStandardMaterial({color:"white"})
-        // this.sphere= new THREE.Mesh(sphGeo,sphMat)
-        // this.sphere.scale.setScalar(10)
-        // this.scene.add(this.sphere)
-        // this.sphere.add(pointLight)
     }
         
 }

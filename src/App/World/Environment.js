@@ -104,49 +104,14 @@ export default class Environment {
   addStations(){
     
     const station = this.station.scene
-    console.log(this.station);
-    const donutGeo= new THREE.TorusGeometry(1,0.4,12,48,Math.PI*2)
-    const donutMesh = new THREE.MeshStandardMaterial({color:'gold',wireframe:true})
-    this.donut = new THREE.Mesh(donutGeo,donutMesh)
+    // this.donut = new THREE.Mesh(donutGeo,donutMesh)
     station.scale.setScalar(100)
-    this.donut.position.set(0,100,0)
-    this.donut.scale.setScalar(200)
-    this.donut.rotation.x = 1.04
-    this.donut.rotation.y = 0.20
-    // this.donut.position.x = -50
-    const axesHelper = new THREE.AxesHelper( 500 );
-    this.pane.addBinding(this.donut, "rotation",{
-    X:{
-      min: 0,
-      max: 360,
-      scale: 1
-    },
-    Y:{
-      min: 0,
-      max: 360,
-      scale: 1
-    }
-  })
-    this.pane.addBinding(this.donut, "position",{
-    X:{
-      min: 0,
-      max: 360,
-      scale: 1
-    },
-    Y:{
-      min: 0,
-      max: 360,
-      scale: 1
-    },
-    Z:{
-      min: 0,
-      max: 360,
-      scale: 1
-    }
-  })
-    this.scene.add(station,this.donut)
-    this.donut.add(axesHelper)
-    this.physics.add(this.donut, "fixed", "trimesh");
+    this.scene.add(station)
+    station.traverse((obj)=>{
+      if(obj.isMesh){
+        this.physics.add(obj, "fixed", "trimesh")
+      }
+    })
   }
 
   addMeshes() {
