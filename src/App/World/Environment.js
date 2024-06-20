@@ -13,14 +13,16 @@ export default class Environment {
     this.texture=assetStore.getState().loadedAssets.texture
     this.assetStore = assetStore.getState()
     this.station = this.assetStore.loadedAssets.station
+    this.cinema = this.assetStore.loadedAssets.cinema
     this.pane = new Pane()
     this.loadEnvironment();
-    this.addGround();
-    this.addWalls();
-    this.addStairs();
-    this.addMeshes();
+    // this.addGround();
+    // this.addWalls();
+    // this.addStairs();
+    // this.addMeshes();
     this.addBackground();
-    this.addStations()
+    this.addStation()
+    // this.addCinema()
   }
 
   loadEnvironment() {
@@ -50,6 +52,7 @@ export default class Environment {
     this.physics.add(this.groundMesh, "fixed", "cuboid");
     
   }
+
 
   addWalls() {
     const wallMaterial = new THREE.MeshStandardMaterial({
@@ -101,7 +104,17 @@ export default class Environment {
       this.physics.add(stairMesh, "fixed", "cuboid");
     });
   }
-  addStations(){
+    addCinema(){
+      this.cinema = this.cinema.scene
+      this.cinema.scale.setScalar(3)
+      this.scene.add(this.cinema);
+      this.cinema.traverse((obj)=>{
+      if(obj.isMesh){
+        this.physics.add(obj,"fixed", "trimesh")
+      }
+      })
+  }
+  addStation(){
     this.stationAll = this.station
     
     this.station = this.station.scene

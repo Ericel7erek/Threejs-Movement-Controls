@@ -31,7 +31,8 @@ export default class AnimationController {
             this.animation.set(clip.name, this.mixer.clipAction(clip))
         })
         console.log(this.animation);
-        this.animation1.get('Animation').play()
+        this.space = this.animation1.get('Animation')
+        this.space.play()
         this.currentAnimation = this.animation.get('Idle')
         this.currentAnimation.play()
     }
@@ -82,7 +83,6 @@ export default class AnimationController {
         action.stop()
         action.play()
         action.crossFadeFrom(this.currentAnimation, 0.2)
-
         this.currentAnimation = action
     }
 
