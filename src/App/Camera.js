@@ -32,22 +32,21 @@ export default class Camera {
         this.isMouseLocked = true;
 
         // Request pointer lock on click
-        this.canvas.addEventListener('ShiftRight', () => {
-    
+        this.canvas.addEventListener('click', () => {
+            this.canvas.requestPointerLock();
         });
-
-        // Handle mouse movement when locked
-        document.addEventListener('mousemove', (event) => {
-            if (this.isMouseLocked) {
-                this.mouseX += event.movementX;
-                this.mouseY += event.movementY;
-
-                // Warp the cursor back to the center when it reaches the edges
-                if (Math.abs(this.mouseX) > this.sizes.width / 2 || Math.abs(this.mouseY) > this.sizes.height / 2) {
-                    this.canvas.requestPointerLock();
+            // Handle mouse movement when locked
+            document.addEventListener('mousemove', (event) => {
+                if (this.isMouseLocked) {
+                    this.mouseX += event.movementX;
+                    this.mouseY += event.movementY;
+                    
+                    // Warp the cursor back to the center when it reaches the edges
+                    if (Math.abs(this.mouseX) > this.sizes.width / 2 || Math.abs(this.mouseY) > this.sizes.height / 2) {
+                        this.canvas.requestPointerLock();
+                    }
                 }
-            }
-        });
+            });
     }
 
     setResizeLister() {
@@ -75,7 +74,7 @@ loop() {
 
         // Update camera rotation based on mouse movement
         const targetRotationX = onGround?0: this.mouseY * 0.002;
-        this.instance.rotation.x = onGround? THREE.MathUtils.lerp(this.instance.rotation.x, targetRotationX, 0.1) : THREE.MathUtils.lerp(this.instance.rotation.x, targetRotationX, 0.4)
+        this.instance.rotation.x = THREE.MathUtils.lerp(this.instance.rotation.x, targetRotationX, 0.1) 
         // const targetRotationY = -this.mouseX * 0.006;
         // this.instance.rotation.y = THREE.MathUtils.lerp(this.instance.rotation.y, targetRotationY, 0.1);
         // this.instance.rotation.x = onGround?0: this.mouseY * 0.002;
