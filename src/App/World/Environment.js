@@ -16,10 +16,10 @@ export default class Environment {
     this.cinema = this.assetStore.loadedAssets.cinema
     this.pane = new Pane()
     this.loadEnvironment();
-    // this.addGround();
-    // this.addWalls();
-    // this.addStairs();
-    // this.addMeshes();
+    this.addGround();
+    this.addWalls();
+    this.addStairs();
+    this.addMeshes();
     this.addBackground();
     this.addStation()
     // this.addCinema()
@@ -118,8 +118,9 @@ export default class Environment {
     this.stationAll = this.station
     
     this.station = this.station.scene
-    // this.donut = new THREE.Mesh(donutGeo,donutMesh)
-    this.station.scale.setScalar(100)
+    this.station.scale.setScalar(1)
+    // this.station.position.x = 10
+    this.station.position.y = 20
     this.scene.add(this.station)
     this.station.traverse((obj)=>{
       if(obj.isMesh){
