@@ -21,11 +21,6 @@ const assetsToLoad = [
     id: "station",
     path: "/space_station_3/scene.gltf",
     type: "model"
-  },
-  {
-    id: "cinema",
-    path: "/model/cinema.glb",
-    type: "model"
   }
 
 ];

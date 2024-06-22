@@ -22,7 +22,6 @@ export default class Environment {
     this.addMeshes();
     this.addBackground();
     this.addStation()
-    // this.addCinema()
   }
 
   loadEnvironment() {
@@ -103,16 +102,6 @@ export default class Environment {
       this.scene.add(stairMesh);
       this.physics.add(stairMesh, "fixed", "cuboid");
     });
-  }
-    addCinema(){
-      this.cinema = this.cinema.scene
-      this.cinema.scale.setScalar(3)
-      this.scene.add(this.cinema);
-      this.cinema.traverse((obj)=>{
-      if(obj.isMesh){
-        this.physics.add(obj,"fixed", "trimesh")
-      }
-      })
   }
   addStation(){
     this.stationAll = this.station
