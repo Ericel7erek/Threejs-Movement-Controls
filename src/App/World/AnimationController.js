@@ -9,8 +9,6 @@ export default class AnimationController {
         this.avatar = this.app.world.character.avatar
         this.character = this.app.world.character.character
         this.camera = this.app.camera.instance
-        this.station = this.app.world.environment.stationAll
-        console.log(this.station);
         this.raycaster = new THREE.Raycaster();
         playerMovements.subscribe((state) => {
             this.moving(state)
@@ -23,16 +21,10 @@ export default class AnimationController {
         this.animation = new Map()
         this.animation1 = new Map()
         this.mixer = new THREE.AnimationMixer(this.avatar.scene)
-        this.mixer1 = new THREE.AnimationMixer(this.station.scene)
-        this.station.animations.forEach((clip)=> {
-            this.animation1.set(clip.name, this.mixer1.clipAction(clip))
-        })
         this.avatar.animations.forEach((clip) => {
             this.animation.set(clip.name, this.mixer.clipAction(clip))
         })
         console.log(this.animation);
-        this.space = this.animation1.get('Animation')
-        this.space.play()
         this.currentAnimation = this.animation.get('Idle')
         this.currentAnimation.play()
     }

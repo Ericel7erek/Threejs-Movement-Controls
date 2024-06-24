@@ -16,12 +16,12 @@ export default class Environment {
     this.cinema = this.assetStore.loadedAssets.Cinema
     this.pane = new Pane()
     this.loadEnvironment();
-    this.addGround();
-    this.addWalls();
-    this.addStairs();
-    this.addMeshes();
+    // this.addGround();
+    // this.addWalls();
+    // this.addStairs();
+    // this.addMeshes();
     this.addBackground();
-    this.addStation()
+    this.addCinema()
   }
 
   loadEnvironment() {
@@ -30,7 +30,8 @@ export default class Environment {
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.directionalLight.position.set(1, 1, 1);
     this.directionalLight.castShadow = true;
-    this.scene.add(this.directionalLight);
+    // this.directionalLight.target = this.posters
+    // this.scene.add(this.directionalLight);
   }
   addBackground(){
     const cubeTextureLoader = new THREE.CubeTextureLoader()
@@ -103,22 +104,31 @@ export default class Environment {
       this.physics.add(stairMesh, "fixed", "cuboid");
     });
   }
-  addStation(){
-    this.stationAll = this.station
-    
-    this.station = this.station.scene
+  addCinema(){
     this.cinema = this.cinema.scene
-    console.log(this.cinema);
-    // this.station.position.x = 10
-    this.cinema.position.y = 20
+    // this.cinema.position.y = 20
     this.scene.add(this.cinema)
-    this.station.scale.setScalar(1.1)
+
     this.cinema.traverse((obj)=>{
-      if(obj.isMesh){
-        console.log(obj);
-        if(obj.name.includes("Cylinder")){
-          obj.add(this.directionalLight)
+      if(obj.isGroup){
+        if(obj.children.length===2){
+          this.posters = obj.children[1]
+          // console.log(obj, "obj");
         }
+      }
+      if(obj.name.includes("Lamp")){
+        console.log(obj.children[1],"dada");
+        obj.position.y +=-0.8
+        // obj.children[1].position.y +=-0.8
+      this.pointLight = new THREE.PointLight(0xffd4af37,1,5)
+      this.pointLight.lookAt(this.posters)
+        
+        obj.children[1].add(this.pointLight)
+        // obj.children[1].lookAt(this.posters)
+        // obj.children[1].position.x = 10
+      }
+      if(obj.isMesh){
+        // console.log(obj);
         if(obj.name === "Stairs"){
         this.physics.add(obj, "fixed", "trimesh")
 

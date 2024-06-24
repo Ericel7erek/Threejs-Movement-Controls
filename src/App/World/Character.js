@@ -16,13 +16,16 @@ export default class Character {
         this.character = new THREE.Mesh(geometry, material);
         this.character.position.set(0, 8, 0);
         this.scene.add(this.character);
-
+        
         const avatar = this.avatar.scene
         avatar.scale.setScalar(3)
         avatar.position.y = -3
         avatar.rotation.y = Math.PI
         console.log(avatar);
         this.character.add(avatar)
+        // const directionalLight = new THREE.DirectionalLight("white",2)
+        // this.character.add(directionalLight)
+
     }
         
 }

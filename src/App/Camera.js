@@ -61,7 +61,7 @@ loop() {
 
     if (this.character) {
         const characterPosition = this.character.translation();
-        const cameraOffset = new THREE.Vector3(0, 2, 18); // Adjust the offset as needed
+        const cameraOffset = new THREE.Vector3(0, 0, -1); // Adjust the offset as needed
         const cameraRotation = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, 0, 'XYZ'));
         const desiredCameraPosition = new THREE.Vector3().copy(characterPosition);
         this.raycaster.set(desiredCameraPosition, new THREE.Vector3(0, -1, 0));
