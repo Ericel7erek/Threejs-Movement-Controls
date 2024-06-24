@@ -120,7 +120,7 @@ export default class Environment {
         console.log(obj.children[1],"dada");
         obj.position.y +=-0.8
         // obj.children[1].position.y +=-0.8
-      this.pointLight = new THREE.PointLight(0xffd4af37,1,5)
+      this.pointLight = new THREE.PointLight(0xffd4af37,2,5)
       this.pointLight.lookAt(this.posters)
         
         obj.children[1].add(this.pointLight)
