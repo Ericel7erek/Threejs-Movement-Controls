@@ -13,7 +13,7 @@ export default class Environment {
     // this.texture=assetStore.getState().loadedAssets.texture
     this.assetStore = assetStore.getState()
     this.station = this.assetStore.loadedAssets.station
-    this.cinema = this.assetStore.loadedAssets.cinema
+    this.cinema = this.assetStore.loadedAssets.Cinema
     this.pane = new Pane()
     this.loadEnvironment();
     this.addGround();
@@ -107,13 +107,25 @@ export default class Environment {
     this.stationAll = this.station
     
     this.station = this.station.scene
-    this.station.scale.setScalar(1)
+    this.cinema = this.cinema.scene
+    console.log(this.cinema);
     // this.station.position.x = 10
-    this.station.position.y = 20
-    this.scene.add(this.station)
-    this.station.traverse((obj)=>{
+    this.cinema.position.y = 20
+    this.scene.add(this.cinema)
+    this.station.scale.setScalar(1.1)
+    this.cinema.traverse((obj)=>{
       if(obj.isMesh){
+        console.log(obj);
+        if(obj.name.includes("Cylinder")){
+          obj.add(this.directionalLight)
+        }
+        if(obj.name === "Stairs"){
         this.physics.add(obj, "fixed", "trimesh")
+
+        } else {
+
+          this.physics.add(obj, "fixed", "cuboid")
+        }
       }
     })
   }
