@@ -12,7 +12,6 @@ export default class Environment {
     this.asset=assetStore.getState().assetsToLoad[1]
     // this.texture=assetStore.getState().loadedAssets.texture
     this.assetStore = assetStore.getState()
-    this.station = this.assetStore.loadedAssets.station
     this.cinema = this.assetStore.loadedAssets.Cinema
     this.pane = new Pane()
     this.loadEnvironment();
@@ -25,7 +24,7 @@ export default class Environment {
   }
 
   loadEnvironment() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
     this.scene.add(ambientLight);
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.directionalLight.position.set(1, 1, 1);

@@ -13,11 +13,6 @@ const assetsToLoad = [
     faces: ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'] 
   },
   {
-    id: "station",
-    path: "/space_station_3/scene.gltf",
-    type: "model"
-  },
-  {
     id: "Cinema",
     path: "/model/Cinema.glb",
     type: "model"
