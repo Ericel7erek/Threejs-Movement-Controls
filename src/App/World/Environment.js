@@ -1,8 +1,8 @@
 import * as THREE from "three";
-
 import App from "../App.js";
 import assetStore from "../Utils/AssetStore.js";
 import { Pane } from "tweakpane";
+import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 
 export default class Environment {
   constructor() {
@@ -105,48 +105,47 @@ export default class Environment {
   }
   addCinema(){
     this.cinema = this.cinema.scene
-    // this.cinema.position.y = 20
     this.scene.add(this.cinema)
 
     this.cinema.traverse((obj)=>{
       if(obj.name === "7ala"){
-        console.log(obj,"ob");
-        // obj.add(this.pointLight)
-        obj.color = new THREE.Color("white")
-      }
-      if(obj.name === "Holder"){
         obj.add(this.pointLight)
-        obj.color = new THREE.Color("white")
       }
-
+      //Posters
       if(obj.isGroup){
         if(obj.children.length===2){
           this.posters = obj.children[1]
-          // console.log(obj, "obj");
         }
       }
+
       if(obj.name.includes("Lamp")){
         console.log(obj.children[1],"dada");
         obj.position.y +=-0.7
-        // obj.children[1].position.y +=-0.8
+
       this.pointLight = new THREE.PointLight(0xffd4af37,2,5)
       this.pointLight.lookAt(this.posters)
         
         obj.children[1].add(this.pointLight)
-        // obj.children[1].lookAt(this.posters)
-        // obj.children[1].position.x = 10
       }
+      
       if(obj.isMesh){
         // console.log(obj);
-        if(obj.name === "Stairs"){
-        this.physics.add(obj, "fixed", "trimesh")
-
-        } 
         if(obj.name === "Corn"){
-        obj.add(this.pointLight)
-        this.physics.add(obj,"dynamic","cuboid")
-        
-      }
+        for (let i = 0; i <= 10; i++) {
+          const cloneGLTF = clone(obj);
+          cloneGLTF.position.set(
+              (Math.random() - 0.5) * 10,
+              (Math.random() + 5) * 10,
+              (Math.random() - 0.5) * 10
+            );
+            this.pointLight = new THREE.PointLight(0xffd4af37,2,5)
+            cloneGLTF.add(this.pointLight)
+            cloneGLTF.scale.setScalar(1.2)
+          this.scene.add(cloneGLTF);
+          this.physics.add(cloneGLTF,"dynamic","ball")
+        }
+        }
+
         else {
 
           this.physics.add(obj, "fixed", "cuboid")
