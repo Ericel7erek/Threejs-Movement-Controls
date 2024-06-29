@@ -109,6 +109,16 @@ export default class Environment {
     this.scene.add(this.cinema)
 
     this.cinema.traverse((obj)=>{
+      if(obj.name === "7ala"){
+        console.log(obj,"ob");
+        // obj.add(this.pointLight)
+        obj.color = new THREE.Color("white")
+      }
+      if(obj.name === "Holder"){
+        obj.add(this.pointLight)
+        obj.color = new THREE.Color("white")
+      }
+
       if(obj.isGroup){
         if(obj.children.length===2){
           this.posters = obj.children[1]
@@ -117,7 +127,7 @@ export default class Environment {
       }
       if(obj.name.includes("Lamp")){
         console.log(obj.children[1],"dada");
-        obj.position.y +=-0.8
+        obj.position.y +=-0.7
         // obj.children[1].position.y +=-0.8
       this.pointLight = new THREE.PointLight(0xffd4af37,2,5)
       this.pointLight.lookAt(this.posters)
@@ -131,7 +141,13 @@ export default class Environment {
         if(obj.name === "Stairs"){
         this.physics.add(obj, "fixed", "trimesh")
 
-        } else {
+        } 
+        if(obj.name === "Corn"){
+        obj.add(this.pointLight)
+        this.physics.add(obj,"dynamic","cuboid")
+        
+      }
+        else {
 
           this.physics.add(obj, "fixed", "cuboid")
         }
