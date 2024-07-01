@@ -96,7 +96,7 @@ movement.multiplyScalar(speedMultiplier)
     // // if(movement.length()>1){
     //     console.log(movement.length());
         const angle = Math.atan2(movement.x,movement.z) + Math.PI
-        const characterRotation= new THREE.Quaternion().setFromAxisAngle(
+        const characterRotation= new THREE.Quaternion().setFromAxisAngle(   
             new THREE.Vector3(0,1,0),
             angle
             )
