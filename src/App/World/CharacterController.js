@@ -79,13 +79,7 @@ if (this.backward) {
 if(this.descending){
     movement.y -= 1;
 }
-// Jumping and gravity
-if (this.jump) {
-    movement.y += 1;
-}
-
-
-else if(onGround){
+else {
 
     movement.y -=1
 }
