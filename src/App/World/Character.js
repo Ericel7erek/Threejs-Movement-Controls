@@ -23,7 +23,7 @@ export default class Character {
         avatar.rotation.y = Math.PI
         console.log(avatar);
         this.character.add(avatar)
-        const directionalLight = new THREE.PointLight(0xffffff,0.1)
+        const directionalLight = new THREE.PointLight(0xffffff,1)
         this.character.add(directionalLight)
 
     }
