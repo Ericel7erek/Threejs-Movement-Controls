@@ -10,7 +10,6 @@ export default class Environment {
     this.scene = this.app.scene;
     this.physics = this.app.world.physics;
     this.asset=assetStore.getState().assetsToLoad[1]
-    // this.texture=assetStore.getState().loadedAssets.texture
     this.assetStore = assetStore.getState()
     this.cinema = this.assetStore.loadedAssets.Cinema
     this.pane = new Pane()
