@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import App from "../App.js";
 import assetStore from "../Utils/AssetStore.js";
-import { Pane } from "tweakpane";
 import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 
 export default class Environment {
@@ -12,7 +11,6 @@ export default class Environment {
     this.asset=assetStore.getState().assetsToLoad[1]
     this.assetStore = assetStore.getState()
     this.cinema = this.assetStore.loadedAssets.Cinema
-    this.pane = new Pane()
     this.loadEnvironment();
     this.addBackground();
     this.addCinema()
