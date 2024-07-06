@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { gsap } from "gsap";
 import App from "../App.js";
 import assetStore from "../Utils/AssetStore.js";
 import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
@@ -8,12 +9,20 @@ export default class Environment {
     this.app = new App();
     this.scene = this.app.scene;
     this.physics = this.app.world.physics;
-    this.asset=assetStore.getState().assetsToLoad[1]
-    this.assetStore = assetStore.getState()
-    this.cinema = this.assetStore.loadedAssets.Cinema
+    this.asset = assetStore.getState().assetsToLoad[1];
+    this.assetStore = assetStore.getState();
+    this.cinema = this.assetStore.loadedAssets.Cinema;
+    this.pointer = new THREE.Vector2();
+    this.posters = []; // Array to store poster objects
+    document.addEventListener('mousemove', this.onPointerMove.bind(this)); // Bind this context
     this.loadEnvironment();
     this.addBackground();
-    this.addCinema()
+    this.addCinema();
+  }
+
+  onPointerMove(event) {
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
   loadEnvironment() {
@@ -25,68 +34,77 @@ export default class Environment {
     // this.directionalLight.target = this.posters
     // this.scene.add(this.directionalLight);
   }
-  addBackground(){
-    const cubeTextureLoader = new THREE.CubeTextureLoader()
-    cubeTextureLoader.setPath(this.asset.path)
-    const backgroundCubemap = cubeTextureLoader
-    .load(this.asset.faces);
 
-  this.scene.background = backgroundCubemap
+  addBackground() {
+    const cubeTextureLoader = new THREE.CubeTextureLoader();
+    cubeTextureLoader.setPath(this.asset.path);
+    const backgroundCubemap = cubeTextureLoader.load(this.asset.faces);
+
+    this.scene.background = backgroundCubemap;
   }
 
-  addCinema(){
-    this.cinema = this.cinema.scene
-    this.scene.add(this.cinema)
+  addCinema() {
+    this.cinema = this.cinema.scene;
+    this.scene.add(this.cinema);
 
-    this.cinema.traverse((obj)=>{
-      if(obj.name === "7ala"){
-        obj.add(this.pointLight)
+    this.cinema.traverse((obj) => {
+      if (obj.name === "7ala") {
+        obj.add(this.pointLight);
       }
-      //Posters
-      if(obj.isGroup){
-        if(obj.children.length===2){
-          this.posters = obj.children[1]
+      // Posters
+      if (obj.isGroup) {
+        if (obj.children.length === 2) {
+          this.posters.push(obj.children[1]); // Store poster object
         }
       }
 
-      if(obj.name.includes("Lamp")){
-        console.log(obj.children[1],"dada");
-        obj.position.y +=-0.7
+      if (obj.name.includes("Lamp")) {
+        console.log(obj.children[1], "dada");
+        obj.position.y += -0.7;
 
-      this.pointLight = new THREE.PointLight(0xffd4af37,2,5)
-      this.pointLight.lookAt(this.posters)
-        
-        obj.children[1].add(this.pointLight)
+        this.pointLight = new THREE.PointLight(0xffd4af37, 2, 5);
+        this.pointLight.lookAt(this.posters);
+
+        obj.children[1].add(this.pointLight);
       }
-      
-      if(obj.isMesh){
+
+      if (obj.isMesh) {
         // console.log(obj);
-        if(obj.name === "Corn"){
-        for (let i = 0; i <= 10; i++) {
-          const cloneGLTF = clone(obj);
-          cloneGLTF.position.set(
+        if (obj.name === "Corn") {
+          for (let i = 0; i <= 10; i++) {
+            const cloneGLTF = clone(obj);
+            cloneGLTF.position.set(
               (Math.random() - 0.5) * 10,
               (Math.random() + 5) * 10,
               (Math.random() - 0.5) * 10
             );
-            this.pointLight = new THREE.PointLight(0xffd4af37,2,5)
-            cloneGLTF.add(this.pointLight)
-            cloneGLTF.scale.setScalar(1.2)
-          this.scene.add(cloneGLTF);
-          this.physics.add(cloneGLTF,"dynamic","ball")
-        }
-        }
-
-        else {
-
-          this.physics.add(obj, "fixed", "cuboid")
+            this.pointLight = new THREE.PointLight(0xffd4af37, 2, 5);
+            cloneGLTF.add(this.pointLight);
+            cloneGLTF.scale.setScalar(1.2);
+            this.scene.add(cloneGLTF);
+            this.physics.add(cloneGLTF, "dynamic", "ball");
+          }
+        } else {
+          this.physics.add(obj, "fixed", "cuboid");
         }
       }
-    })
+    });
   }
 
-  loop(){
-    
-  }
+  loop() {
+
+    this.raycaster = new THREE.Raycaster();
+    this.raycaster.setFromCamera(this.pointer, this.app.camera.instance);
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+    intersects.forEach(intersect => {
+      if (this.posters.includes(intersect.object)) {
+        intersect.object.position.z = 2
+        gsap.to(intersect.object.position, { z: 2, duration: 0.5 });
+      }
+    });
+
+    console.log(intersects);
+}
 
 }

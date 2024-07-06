@@ -33,5 +33,6 @@ export default class World {
     this.physics.loop();
     if(this.characterController) this.characterController.loop(deltaTime)
     if(this.animationController) this.animationController.loop(deltaTime)
+    if(this.environment) this.environment.loop(deltaTime)
   }
 }
