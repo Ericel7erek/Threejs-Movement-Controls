@@ -20,6 +20,7 @@
 
         this.world.loop(deltaTime, elapsedTime)
         this.camera.loop(deltaTime)
+        this.environment.loop(deltaTime)
         this.renderer.loop()
         window.requestAnimationFrame(() => this.loop())
     }
