@@ -92,19 +92,22 @@ export default class Environment {
   }
 
   loop() {
-
     this.raycaster = new THREE.Raycaster();
     this.raycaster.setFromCamera(this.pointer, this.app.camera.instance);
     const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
+    // Reset scale of posters
+    this.posters.forEach(poster => {
+      gsap.to(poster.scale, { x: 1, y: 1, z: 1, duration: 10 });
+    });
+
+    // Scale intersected posters
     intersects.forEach(intersect => {
       if (this.posters.includes(intersect.object)) {
-        intersect.object.position.z = 2
-        gsap.to(intersect.object.position, { z: 2, duration: 0.5 });
+        gsap.to(intersect.object.scale, { z:20, duration: 10 });
       }
     });
 
     console.log(intersects);
-}
-
+  }
 }

@@ -33,29 +33,27 @@ export default class Physics {
    * @param {THREE.Mesh} mesh - The mesh to add to the physics simulation
    * @param {string} type - The rigid body type ("dynamic" or "fixed")
    * @param {string} collider - The collider type ("cuboid", "ball", or "trimesh")
+   * @returns {any} The created rigid body object
    */
   add(mesh, type, collider) {
     // defining the rigid body type
     let rigidBodyType;
     switch (type) {
       case 'dynamic':
-      rigidBodyType = this.rapier.RigidBodyDesc.dynamic();
-      break;
-
+        rigidBodyType = this.rapier.RigidBodyDesc.dynamic();
+        break;
       case 'fixed':
-      rigidBodyType = this.rapier.RigidBodyDesc.fixed();
-      break;
-
+        rigidBodyType = this.rapier.RigidBodyDesc.fixed();
+        break;
       case 'kinematic':
-      rigidBodyType = this.rapier.RigidBodyDesc.kinematicPositionBased();
-      break;
+        rigidBodyType = this.rapier.RigidBodyDesc.kinematicPositionBased();
+        break;
     }
 
-    this.rigidBody = this.world.createRigidBody(rigidBodyType);
+    const rigidBody = this.world.createRigidBody(rigidBodyType);
 
     // defining the collider type
     let colliderType;
-
     switch (collider) {
       case "cuboid":
         const dimensions = this.computeCuboidDimensions(mesh);
@@ -64,12 +62,12 @@ export default class Physics {
           dimensions.y / 2,
           dimensions.z / 2
         );
-        this.world.createCollider(colliderType, this.rigidBody);
+        this.world.createCollider(colliderType, rigidBody);
         break;
       case "ball":
         const radius = this.computeBallDimensions(mesh);
         colliderType = this.rapier.ColliderDesc.ball(radius);
-        this.world.createCollider(colliderType, this.rigidBody);
+        this.world.createCollider(colliderType, rigidBody);
         break;
       case "trimesh":
         const { scaledVertices, indices } = this.computeTrimeshDimensions(mesh);
@@ -77,19 +75,27 @@ export default class Physics {
           scaledVertices,
           indices
         );
-        this.world.createCollider(colliderType, this.rigidBody);
-
+        this.world.createCollider(colliderType, rigidBody);
         break;
     }
 
     // setting the rigid body position and rotation
     const worldPosition = mesh.getWorldPosition(new THREE.Vector3());
     const worldRotation = mesh.getWorldQuaternion(new THREE.Quaternion());
-    this.rigidBody.setTranslation(worldPosition);
-    this.rigidBody.setRotation(worldRotation);
+    rigidBody.setTranslation(worldPosition);
+    rigidBody.setRotation(worldRotation);
 
-    this.meshMap.set(mesh, this.rigidBody);
-    return this.rigidBody
+    this.meshMap.set(mesh, rigidBody);
+    return rigidBody;
+  }
+
+  /**
+   * Retrieves the physics body associated with a given mesh
+   * @param {THREE.Mesh} mesh - The mesh whose physics body to retrieve
+   * @returns {any} The physics body associated with the mesh
+   */
+  getBody(mesh) {
+    return this.meshMap.get(mesh);
   }
 
   /**
@@ -106,13 +112,10 @@ export default class Physics {
   }
 
   /**
-   * Computes the radius of a
-   /**
-
-Computes the radius of a sphere collider for a given mesh
-@param {THREE.Mesh} mesh - The mesh to compute the radius for
-@returns {number} The radius of the sphere collider
-*/
+   * Computes the radius of a sphere collider for a given mesh
+   * @param {THREE.Mesh} mesh - The mesh to compute the radius for
+   * @returns {number} The radius of the sphere collider
+   */
   computeBallDimensions(mesh) {
     mesh.geometry.computeBoundingSphere();
     const radius = mesh.geometry.boundingSphere.radius;
@@ -122,10 +125,10 @@ Computes the radius of a sphere collider for a given mesh
   }
 
   /**
-  Computes the scaled vertices and indices of a trimesh collider for a given mesh
-  @param {THREE.Mesh} mesh - The mesh to compute the scaled vertices and indices for
-  @returns {{scaledVertices: number[], indices: number[]}} The scaled vertices and indices of the trimesh collider
-  */
+   * Computes the scaled vertices and indices of a trimesh collider for a given mesh
+   * @param {THREE.Mesh} mesh - The mesh to compute the scaled vertices and indices for
+   * @returns {{scaledVertices: number[], indices: number[]}} The scaled vertices and indices of the trimesh collider
+   */
   computeTrimeshDimensions(mesh) {
     const vertices = mesh.geometry.attributes.position.array;
     const indices = mesh.geometry.index.array;
@@ -135,10 +138,10 @@ Computes the radius of a sphere collider for a given mesh
     });
     return { scaledVertices, indices };
   }
+
   /**
-  
-  The loop function that updates the physics simulation and the mesh positions and rotations
-  */
+   * The loop function that updates the physics simulation and the mesh positions and rotations
+   */
   loop() {
     if (!this.rapierLoaded) return;
     this.world.step();
@@ -161,7 +164,6 @@ Computes the radius of a sphere collider for a given mesh
         new THREE.Quaternion().setFromRotationMatrix(inverseParentMatrix);
       rotation.premultiply(inverseParentRotation);
 
-      
       mesh.position.copy(position);
       mesh.quaternion.copy(rotation);
     });
