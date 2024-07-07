@@ -98,13 +98,14 @@ export default class Environment {
 
     // Reset scale of posters
     this.posters.forEach(poster => {
-      gsap.to(poster.scale, { x: 1, y: 1, z: 1, duration: 10 });
+      gsap.to(poster.scale, { x: 1, y: 1, z: 1, duration: 1.5 });
     });
 
     // Scale intersected posters
     intersects.forEach(intersect => {
       if (this.posters.includes(intersect.object)) {
-        gsap.to(intersect.object.scale, { z:20, duration: 10 });
+        const timeline = gsap.timeline()
+        timeline.to(intersect.object.scale, { z:5, duration: 1 });
       }
     });
 
