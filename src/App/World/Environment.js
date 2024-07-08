@@ -104,9 +104,8 @@ export default class Environment {
     // Scale intersected posters
     intersects.forEach(intersect => {
       if (this.posters.includes(intersect.object)) {
-        this.clone =clone(intersect.object)
         const timeline = gsap.timeline()
-        timeline.to(this.clone.scale, { z:5, duration: 1 });
+        timeline.to(intersect.object.scale, { z:5, duration: 1 });
       }
     });
 
