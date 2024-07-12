@@ -71,19 +71,19 @@ export default class Environment {
       if (obj.isMesh) {
         // console.log(obj);
         if (obj.name === "Corn") {
-          for (let i = 0; i <= 10; i++) {
-            const cloneGLTF = clone(obj);
-            cloneGLTF.position.set(
-              (Math.random() - 0.5) * 10,
-              (Math.random() + 5) * 10,
-              (Math.random() - 0.5) * 10
-            );
-            this.pointLight = new THREE.PointLight(0xffd4af37, 2, 5);
-            cloneGLTF.add(this.pointLight);
-            cloneGLTF.scale.setScalar(1.2);
-            this.scene.add(cloneGLTF);
-            this.physics.add(cloneGLTF, "dynamic", "ball");
-          }
+          // for (let i = 0; i <= 10; i++) {
+          //   const cloneGLTF = clone(obj);
+          //   cloneGLTF.position.set(
+          //     (Math.random() - 0.5) * 10,
+          //     (Math.random() + 5) * 10,
+          //     (Math.random() - 0.5) * 10
+          //   );
+          //   this.pointLight = new THREE.PointLight(0xffd4af37, 2, 5);
+          //   cloneGLTF.add(this.pointLight);
+          //   cloneGLTF.scale.setScalar(1.2);
+          //   this.scene.add(cloneGLTF);
+          //   this.physics.add(cloneGLTF, "dynamic", "ball");
+          // }
         } else {
           this.physics.add(obj, "fixed", "cuboid");
         }
@@ -91,24 +91,34 @@ export default class Environment {
     });
   }
 
-  loop() {
-    this.raycaster = new THREE.Raycaster();
-    this.raycaster.setFromCamera(this.pointer, this.app.camera.instance);
-    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+loop() {
+  this.raycaster = new THREE.Raycaster();
+  this.raycaster.setFromCamera(this.pointer, this.app.camera.instance);
+  const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
-    // Reset scale of posters
-    this.posters.forEach(poster => {
-      gsap.to(poster.scale, { x: 1, y: 1, z: 1, duration: 1.5 });
-    });
-
-    // Scale intersected posters
+  // Track the currently intersected object
+  let currentlyHovered = null;
     intersects.forEach(intersect => {
       if (this.posters.includes(intersect.object)) {
-        const timeline = gsap.timeline()
-        timeline.to(intersect.object.scale, { z:5, duration: 1 });
-      }
-    });
 
-    console.log(intersects);
+    currentlyHovered = intersect.object
+  }})
+
+  // Reset scale of posters
+  this.posters.forEach(poster => {
+    if (poster !== currentlyHovered) {
+      gsap.to(poster.scale, { x: 1, y: 1, z: 1, duration: 1.5 });
+    }
+  });
+
+  // Scale intersected posters
+  if (currentlyHovered) {
+    const timeline = gsap.timeline();
+    timeline.to(currentlyHovered.scale, { z: 5, duration: 1 });
+    timeline.to(currentlyHovered.scale, { z: 5, x: 5, duration: 1 });
   }
+
+  console.log(intersects);
+}
+
 }
