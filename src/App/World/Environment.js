@@ -115,9 +115,9 @@ loop() {
   // Reset scale of posters
     this.posters.forEach(poster => {
     if (poster !== currentlyHovered) {
-      const timeline = gsap.timeline();
-      timeline.to(poster.scale, { x: 1, duration: 1 },0);
-      timeline.to(poster.scale, { z: 1, duration: 3 },0);
+    const timeline = gsap.timeline();
+    timeline.to(poster.scale, { x: 1, duration: 1 },0);
+    timeline.to(poster.scale, { z: 1, duration: 3 },0);
     }
   });
   }
