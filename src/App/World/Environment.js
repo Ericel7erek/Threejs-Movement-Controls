@@ -104,18 +104,22 @@ loop() {
     currentlyHovered = intersect.object
   }})
 
-  // Reset scale of posters
-  this.posters.forEach(poster => {
-    if (poster !== currentlyHovered) {
-      gsap.to(poster.scale, { x: 1, y: 1, z: 1, duration: 1.5 });
-    }
-  });
+
 
   // Scale intersected posters
   if (currentlyHovered) {
     const timeline = gsap.timeline();
-    timeline.to(currentlyHovered.scale, { z: 5, duration: 1 });
-    timeline.to(currentlyHovered.scale, { z: 5, x: 5, duration: 1 });
+    timeline.to(currentlyHovered.scale, { z: 5, duration: 1 },0);
+    timeline.to(currentlyHovered.scale, { x: 2, duration: 1 },0);
+  } else {
+  // Reset scale of posters
+    this.posters.forEach(poster => {
+    if (poster !== currentlyHovered) {
+      const timeline = gsap.timeline();
+      timeline.to(poster.scale, { x: 1, duration: 1 },0);
+      timeline.to(poster.scale, { z: 1, duration: 3 },0);
+    }
+  });
   }
 
   console.log(intersects);
