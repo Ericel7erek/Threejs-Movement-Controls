@@ -99,7 +99,8 @@ export default class Environment {
   video.play(); // Play the video
 
   this.videoTexture = new THREE.VideoTexture(video);
-  this.videoTexture.wrapS = THREE.ClampToEdgeWrapping
+  this.videoTexture.wrapS = THREE.RepeatWrapping;
+  this.videoTexture.repeat.x = - 1
   this.videoTexture.minFilter = THREE.LinearFilter;
   this.videoTexture.magFilter = THREE.LinearFilter;
   // this.videoTexture.format = THREE.RGBFormat;
