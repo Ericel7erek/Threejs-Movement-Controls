@@ -48,6 +48,10 @@ export default class Environment {
     this.scene.add(this.cinema);
 
     this.cinema.traverse((obj) => {
+      if(obj.name ==='Screen'){
+        console.log(obj);
+        this.addVideoToScreen(obj)
+      }
       if (obj.name === "7ala") {
         obj.add(this.pointLight);
       }
@@ -90,6 +94,18 @@ export default class Environment {
       }
     });
   }
+  addVideoToScreen(screenMesh) {
+  const video = document.getElementById('video');
+  video.play(); // Play the video
+
+  this.videoTexture = new THREE.VideoTexture(video);
+  this.videoTexture.wrapS = THREE.ClampToEdgeWrapping
+  this.videoTexture.minFilter = THREE.LinearFilter;
+  this.videoTexture.magFilter = THREE.LinearFilter;
+  // this.videoTexture.format = THREE.RGBFormat;
+
+  screenMesh.material = new THREE.MeshStandardMaterial({ map: this.videoTexture,toneMapped:false,side:THREE.FrontSide });
+}
 
 loop() {
   this.raycaster = new THREE.Raycaster();
@@ -121,8 +137,8 @@ loop() {
     }
   });
   }
-
-  console.log(intersects);
+this.videoTexture.needsUpdate = true;
+  // console.log(intersects);
 }
 
 }
