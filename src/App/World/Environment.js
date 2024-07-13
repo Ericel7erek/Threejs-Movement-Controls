@@ -88,7 +88,11 @@ export default class Environment {
           //   this.scene.add(cloneGLTF);
           //   this.physics.add(cloneGLTF, "dynamic", "ball");
           // }
-        } else {
+        } 
+        if(obj.name.includes("Carpet")){
+
+        }
+        else {
           this.physics.add(obj, "fixed", "cuboid");
         }
       }
@@ -96,7 +100,7 @@ export default class Environment {
   }
   addVideoToScreen(screenMesh) {
   const video = document.getElementById('video');
-  video.play(); // Play the video
+  // video.play(); // Play the video
 
   this.videoTexture = new THREE.VideoTexture(video);
   this.videoTexture.wrapS = THREE.RepeatWrapping;

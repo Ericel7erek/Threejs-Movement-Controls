@@ -39,6 +39,7 @@ export default class AnimationController {
     background: './sounds/Largo.ogg',
     chickenDance: './sounds/ChickenDance.ogg',
     flying: './sounds/Flying.ogg',
+    walking: './sounds/indoor-footsteps-6385.mp3',
     // Add more sounds as needed
     };
 
@@ -86,41 +87,45 @@ moving(state) {
     
     if (onGround) {
         if (state.jump) {
-            this.playAnimation("Flying");
-            this.playSound('flying');
+            // this.playAnimation("Flying");
+            // this.playSound('flying');
 
         } 
         else if (state.forward || state.backward) {
             this.playAnimation("SlowRun");
-            this.stopSound('flying')
+            // this.stopSound('flying')
+            this.playSound('walking')
 
         } else if (state.right) {
             this.playAnimation("StrafeRight");
-            this.stopSound('flying')
+            // this.stopSound('flying')
         } else if (state.left) {
             this.playAnimation("StrafeLeft");
-            this.stopSound('flying')
+            // this.stopSound('flying')
         } else if (state.dance) {
             this.playAnimation("ChickenDance");
             this.playSound('chickenDance');
-            this.stopSound('flying')
+            // this.stopSound('flying')
 
         } else {
             this.playAnimation("Idle");
             if (this.sounds.get('chickenDance')?.isPlaying) {
                 this.stopSound('chickenDance');
+                this.stopSound('walking');
             }
-            this.stopSound('flying')
+            // this.stopSound('flying')
+            this.stopSound('walking');
+
             // this.playSound('background');
 
         }
     } else {
         if (state.jump) {
-            this.playAnimation("Flying");
-            this.playSound('flying');
+            // this.playAnimation("Flying");
+            // this.playSound('flying');
         } else if (state.left || state.right || state.forward || state.backward) {
-            this.playAnimation("Flying");
-            this.playSound('flying');
+            // this.playAnimation("Flying");
+            // this.playSound('flying');
         }
     }
 }

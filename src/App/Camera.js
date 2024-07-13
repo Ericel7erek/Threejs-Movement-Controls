@@ -82,8 +82,4 @@ loop() {
         const characterQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.instance.rotation.x, this.instance.rotation.y, this.instance.rotation.z));
         this.character.setRotation(characterQuaternion);
     }
-}
-
-
-
-}
+}}
