@@ -105,7 +105,7 @@ movement.multiplyScalar(speedMultiplier)
             // console.log(this.camera.quaternion);
         // }
     // Normalize and scale movement vector and set y component to -1
- onGround? movement.normalize().multiplyScalar(0.4): null
+    onGround? movement.normalize().multiplyScalar(0.4): null
 
     // Update collider movement and get new position of rigid body
     this.characterController.computeColliderMovement(this.collider, movement);
