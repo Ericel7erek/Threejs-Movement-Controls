@@ -36,7 +36,6 @@ export default class AnimationController {
 
     // create a global audio source
     const soundFiles = {
-    background: './sounds/Largo.ogg',
     chickenDance: './sounds/ChickenDance.ogg',
     flying: './sounds/Flying.ogg',
     walking: './sounds/indoor-footsteps-6385.mp3',
