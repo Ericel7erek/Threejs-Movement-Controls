@@ -15,7 +15,8 @@ class SoundManager {
             chickenDance: './sounds/ChickenDance.ogg',
             flying: './sounds/Flying.ogg',
             walking: './sounds/indoor-footsteps-6385.mp3',
-            click: './sounds/click.mp3'
+            click: './sounds/click.mp3',
+            open: './sounds/open.mp3',
             // Add more sounds as needed
         };
 
@@ -25,7 +26,7 @@ class SoundManager {
             const sound = new THREE.Audio(listener);
             audioLoader.load(soundFiles[key], (buffer) => {
                 sound.setBuffer(buffer);
-                sound.setLoop(key === 'background'); // Only loop background sound
+                sound.setLoop(false); // Only loop background sound
                 sound.setVolume(1);
                 this.sounds.set(key, sound);
             });

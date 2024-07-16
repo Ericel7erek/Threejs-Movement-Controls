@@ -12,6 +12,7 @@ export default class Environment {
     this.asset = assetStore.getState().assetsToLoad[1];
     this.assetStore = assetStore.getState();
     this.cinema = this.assetStore.loadedAssets.Cinema;
+    this.soundManager = this.app.soundManager
     this.pointer = new THREE.Vector2();
     this.posters = []; // Array to store poster objects
     document.addEventListener('mousemove', this.onPointerMove.bind(this)); // Bind this context
@@ -132,6 +133,11 @@ loop() {
     const timeline = gsap.timeline();
     timeline.to(currentlyHovered.scale, { z: 5, duration: 1 },0);
     timeline.to(currentlyHovered.scale, { x: 2, duration: 1 },0);
+    this.soundManager.playSound('open')
+    setTimeout(() => {
+    this.soundManager.stopSound('open');
+}, 835);
+
   } else {
   // Reset scale of posters
     this.posters.forEach(poster => {
