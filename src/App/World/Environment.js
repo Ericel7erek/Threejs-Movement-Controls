@@ -133,10 +133,10 @@ loop() {
     const timeline = gsap.timeline();
     timeline.to(currentlyHovered.scale, { z: 5, duration: 1 },0);
     timeline.to(currentlyHovered.scale, { x: 2, duration: 1 },0);
-    this.soundManager.playSound('open')
-    setTimeout(() => {
-    this.soundManager.stopSound('open');
-}, 835);
+//     this.soundManager.playSound('open')
+//     setTimeout(() => {
+//     this.soundManager.stopSound('open');
+// }, 835);
 
   } else {
   // Reset scale of posters
