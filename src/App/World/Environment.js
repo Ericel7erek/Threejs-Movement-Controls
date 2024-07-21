@@ -149,7 +149,6 @@ loop() {
   });
   }
 this.videoTexture.needsUpdate = true;
-  // console.log(intersects);
 }
 
 }
