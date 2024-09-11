@@ -4,7 +4,7 @@ import App from "../App"; // import App to access the camera
 class SoundManager {
     constructor() {
         this.app = new App();
-        this.camera = this.app.camera.instance; // access the camera instance
+        this.camera = this.app.camera.instance; 
 
         this.sounds = new Map();
         const listener = new THREE.AudioListener();
