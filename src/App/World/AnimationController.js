@@ -1,6 +1,6 @@
 import App from "../App";
 import * as THREE from 'three';
-import { movingStore, playerMovements } from "../Utils/Store";
+import { playerMovements } from "../Utils/Store";
 
 export default class AnimationController {
     constructor() {

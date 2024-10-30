@@ -1,4 +1,4 @@
-import { movingStore, playerMovements } from "../Utils/Store";
+import { playerMovements } from "../Utils/Store";
 
 export default class InputController {
   constructor() {
